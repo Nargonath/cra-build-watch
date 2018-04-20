@@ -1,0 +1,61 @@
+{
+  "name": "cra-build-watch",
+  "version": "0.0.0-development",
+  "description": "A script for create-react-app that writes development builds to the disk",
+  "main": "scripts/index.js",
+  "bin": "bin/cra-build-watch.js",
+  "files": [
+    "bin",
+    "scripts"
+  ],
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "scripts": {
+    "cm": "git-cz",
+    "commitmsg": "commitlint -e",
+    "travis-deploy-once": "travis-deploy-once",
+    "semantic-release": "semantic-release"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "prettier": {
+    "printWidth": 100,
+    "trailingComma": "es5",
+    "singleQuote": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nargonath/cra-build-watch.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Nargonath/cra-build-watch/issues"
+  },
+  "homepage": "https://github.com/Nargonath/cra-build-watch#readme",
+  "author": "Nargonath <jonas.pauthier@gmail.com>",
+  "keywords": [
+    "create-react-app",
+    "react",
+    "webpack",
+    "development-environment",
+    "build",
+    "reactjs"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/cli": "6.1.3",
+    "@commitlint/config-conventional": "6.1.3",
+    "@dixeed/eslint-config": "2.0.0",
+    "commitizen": "2.9.6",
+    "cz-conventional-changelog": "2.1.0",
+    "eslint": "4.19.1",
+    "husky": "0.14.3",
+    "lint-staged": "7.0.4",
+    "prettier": "1.12.1",
+    "travis-deploy-once": "^4.4.1",
+    "semantic-release": "^15.1.7"
+  }
+}
