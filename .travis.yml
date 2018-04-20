@@ -9,7 +9,9 @@ node_js:
   - '8'
   - '6'
 after_success:
-  - npm run travis-deploy-once "npm run semantic-release"
+  # required for yarn not to fail when installing semantic-release
+  # instead it is removed from the dependencies and added as global at the end
+  - yarn global add semantic-release && semantic-release || true
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/

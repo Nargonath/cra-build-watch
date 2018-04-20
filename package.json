@@ -4,10 +4,7 @@
   "description": "A script for create-react-app that writes development builds to the disk",
   "main": "scripts/index.js",
   "bin": "bin/cra-build-watch.js",
-  "files": [
-    "bin",
-    "scripts"
-  ],
+  "files": ["bin", "scripts"],
   "engines": {
     "node": ">=6.0.0"
   },
@@ -55,7 +52,6 @@
     "husky": "0.14.3",
     "lint-staged": "7.0.4",
     "prettier": "1.12.1",
-    "travis-deploy-once": "^4.4.1",
-    "semantic-release": "^15.1.7"
+    "travis-deploy-once": "^4.4.1"
   }
 }
