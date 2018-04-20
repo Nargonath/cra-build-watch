@@ -1,2 +1,69 @@
-# cra-build-watch
-A script for create-react-app that writes development builds to the disk
+<div align="center">
+  <h1>cra-build-watch</h1>
+  <strong>A script for create-react-app that writes development builds to the disk</strong>
+</div>
+
+<hr>
+
+# Disclaimer
+
+This script is meant as a temporary workaround for `create-react-app` project based until this feature is built-in into `react-scripts`. See [create-react-app#1070](https://github.com/facebook/create-react-app/issues/1070).
+
+This script is inspired by other work related such as: https://gist.github.com/jasonblanchard/ae0d2e304a647cd847c0b4493c2353d4.
+
+# Why do I need this?
+
+As of now (20/04/2018), `create-react-app` (more precisely `react-scripts`) does not allow development builds to be written to the disk because it uses `webpackDevServer` to serve your build files and folders ([for good reasons](https://github.com/facebook/create-react-app/issues/1070#issuecomment-261812303)). The problem is that in some cases you need to have these files written to the disk i.e:
+
+* Developing browser extensions using React.
+* Incorporating your React application into an existing application.
+* Serving your React app with a dedicated backend.
+
+# Installation
+
+Add it to your project using `npm`:
+
+```
+npm install -D cra-build-watch
+```
+
+or using `yarn`:
+
+```
+yarn add -D cra-build-watch
+```
+
+# Usage
+
+Add a new script into your `package.json`:
+
+```json
+{
+  "scripts": {
+    "watch": "cra-build-watch"
+  }
+}
+```
+
+Run that script:
+
+```
+npm run watch
+```
+
+with Yarn:
+
+```
+yarn watch
+```
+
+# Configuration
+
+By default the script will generate everything into `build/` at your project root and remove the public path from webpack's configuration.
+
+If those defaults do not work for you, the script accepts some arguments:
+
+* `-b|--build-path`: expects either an absolute or relative path. If a relative path is given it will be prefixed by your project root path.
+  * default: `yourProjectRoot/build`.
+* `-p|--public-path`: expects a relative URL where `/` is the root. If you serve your files using an external webserver this argument is to match with your web server configuration. More information can be found in [webpack configuration guide](https://webpack.js.org/configuration/output/#output-publicpath).
+  * default: "".
