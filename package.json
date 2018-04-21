@@ -4,7 +4,7 @@
   "description": "A script for create-react-app that writes development builds to the disk",
   "main": "scripts/index.js",
   "bin": "bin/cra-build-watch.js",
-  "files": ["bin", "scripts"],
+  "files": ["bin", "scripts", "utils"],
   "engines": {
     "node": ">=6.0.0"
   },
