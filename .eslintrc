@@ -1,3 +1,4 @@
 {
-  "extends": ["@dixeed/eslint-config"]
+  "extends": ["@dixeed/eslint-config"],
+  "env": { "jest": true }
 }
