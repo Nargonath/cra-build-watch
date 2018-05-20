@@ -7,7 +7,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const ora = require('ora');
 const {
-  flags: { buildPath, publicPath, verbose },
+    flags: {buildPath, publicPath, verbose},
 } = require('../utils/cliHandler');
 const paths = importCwd('react-scripts/config/paths');
 const webpack = importCwd('webpack');
@@ -22,23 +22,27 @@ const spinner = ora('Update webpack configuration').start();
  */
 config.entry = config.entry.filter(fileName => !fileName.match(/webpackHotDevClient/));
 config.plugins = config.plugins.filter(
-  plugin => !(plugin instanceof webpack.HotModuleReplacementPlugin)
+    plugin => !(plugin instanceof webpack.HotModuleReplacementPlugin)
 );
 
 /**
  * We also need to update the path where the different files get generated.
  */
-config.output.path = buildPath ? handleBuildPath(buildPath) : paths.appBuild;
+const resolvedBuildPath = buildPath ? handleBuildPath(buildPath) : paths.appBuild; // resolve the build path
+
+// update the paths in config
+config.output.path = resolvedBuildPath;
 config.output.publicPath = publicPath || '';
 config.output.filename = `js/bundle.js`;
 config.output.chunkFilename = `js/[name].chunk.js`;
+
 // update media path destination
 config.module.rules[1].oneOf[0].options.name = `media/[name].[hash:8].[ext]`;
 config.module.rules[1].oneOf[3].options.name = `media/[name].[hash:8].[ext]`;
 config.plugins[1] = new HtmlWebpackPlugin({
-  inject: true,
-  template: paths.appHtml,
-  filename: 'index.html',
+    inject: true,
+    template: paths.appHtml,
+    filename: 'index.html',
 });
 
 spinner.succeed();
@@ -47,57 +51,57 @@ spinner.start('Clear destination folder');
 let inProgress = false;
 
 fs
-  .emptyDir(paths.appBuild)
-  .then(() => {
-    spinner.succeed();
-
-    return new Promise((resolve, reject) => {
-      const webpackCompiler = webpack(config);
-      webpackCompiler.apply(
-        new webpack.ProgressPlugin(() => {
-          if (!inProgress) {
-            spinner.start('Start webpack watch');
-            inProgress = true;
-          }
-        })
-      );
-
-      webpackCompiler.watch({}, (err, stats) => {
-        if (err) {
-          return reject(err);
-        }
-
+    .emptyDir(paths.appBuild)
+    .then(() => {
         spinner.succeed();
-        inProgress = false;
 
-        if (verbose) {
-          console.log();
-          console.log(
-            stats.toString({
-              chunks: false,
-              colors: true,
-            })
-          );
-          console.log();
-        }
+        return new Promise((resolve, reject) => {
+            const webpackCompiler = webpack(config);
+            webpackCompiler.apply(
+                new webpack.ProgressPlugin(() => {
+                    if (!inProgress) {
+                        spinner.start('Start webpack watch');
+                        inProgress = true;
+                    }
+                })
+            );
 
-        return resolve();
-      });
-    });
-  })
-  .then(() => copyPublicFolder());
+            webpackCompiler.watch({}, (err, stats) => {
+                if (err) {
+                    return reject(err);
+                }
+
+                spinner.succeed();
+                inProgress = false;
+
+                if (verbose) {
+                    console.log();
+                    console.log(
+                        stats.toString({
+                            chunks: false,
+                            colors: true,
+                        })
+                    );
+                    console.log();
+                }
+
+                return resolve();
+            });
+        });
+    })
+    .then(() => copyPublicFolder());
 
 function copyPublicFolder() {
-  return fs.copy(paths.appPublic, paths.appBuild, {
-    dereference: true,
-    filter: file => file !== paths.appHtml,
-  });
+    return fs.copy(paths.appPublic, resolvedBuildPath, {
+        dereference: true,
+        filter: file => file !== paths.appHtml,
+    });
 }
 
 function handleBuildPath(userBuildPath) {
-  if (path.isAbsolute(userBuildPath)) {
-    return userBuildPath;
-  }
+    if (path.isAbsolute(userBuildPath)) {
+        return userBuildPath;
+    }
 
-  return path.join(process.cwd(), userBuildPath);
+    return path.join(process.cwd(), userBuildPath);
 }
