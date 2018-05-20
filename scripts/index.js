@@ -28,10 +28,14 @@ config.plugins = config.plugins.filter(
 /**
  * We also need to update the path where the different files get generated.
  */
-config.output.path = buildPath ? handleBuildPath(buildPath) : paths.appBuild;
+const resolvedBuildPath = buildPath ? handleBuildPath(buildPath) : paths.appBuild; // resolve the build path
+
+// update the paths in config
+config.output.path = resolvedBuildPath;
 config.output.publicPath = publicPath || '';
 config.output.filename = `js/bundle.js`;
 config.output.chunkFilename = `js/[name].chunk.js`;
+
 // update media path destination
 config.module.rules[1].oneOf[0].options.name = `media/[name].[hash:8].[ext]`;
 config.module.rules[1].oneOf[3].options.name = `media/[name].[hash:8].[ext]`;
@@ -88,7 +92,7 @@ fs
   .then(() => copyPublicFolder());
 
 function copyPublicFolder() {
-  return fs.copy(paths.appPublic, paths.appBuild, {
+  return fs.copy(paths.appPublic, resolvedBuildPath, {
     dereference: true,
     filter: file => file !== paths.appHtml,
   });
