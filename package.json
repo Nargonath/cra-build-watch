@@ -12,6 +12,7 @@
     "test": "jest",
     "cm": "git-cz",
     "commitmsg": "commitlint -e",
+    "precommit": "lint-staged",
     "travis-deploy-once": "travis-deploy-once",
     "semantic-release": "semantic-release"
   },
@@ -19,6 +20,9 @@
     "commitizen": {
       "path": "cz-conventional-changelog"
     }
+  },
+  "lint-staged": {
+    "{{bin,scripts,utils}/**/*.{js,json},*.{js,json}}": ["prettier --write", "git add"]
   },
   "prettier": {
     "printWidth": 100,
