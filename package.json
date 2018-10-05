@@ -48,7 +48,7 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "react-scripts": "^1.0"
+    "react-scripts": "^2.0.3"
   },
   "devDependencies": {
     "@commitlint/cli": "6.1.3",
