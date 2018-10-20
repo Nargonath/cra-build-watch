@@ -28,6 +28,10 @@ As of now (20/04/2018), `create-react-app` (more precisely `react-scripts`) does
 * Incorporating your React application into an existing application.
 * Serving your React app with a dedicated backend.
 
+# Prerequisites
+
+Supports `react-scripts >= 1.0.x`, hence it supports the newest version `2.x.x`.
+
 # Installation
 
 Add it to your project using `npm`:
@@ -74,6 +78,7 @@ If those defaults do not work for you, the script accepts some arguments:
 
 * `-b|--build-path`: expects either an absolute or relative path. If a relative path is given it will be prefixed by your project root path.
   * default: `yourProjectRoot/build`.
+* `--react-scripts-version`: expects the `react-scripts` version you are using in your project i.e `2.0.3`. If not given it will be implied from your package.json and if it cannot be implied the major version 2 will be the default.
 * `-p|--public-path`: expects a relative URL where `/` is the root. If you serve your files using an external webserver this argument is to match with your web server configuration. More information can be found in [webpack configuration guide](https://webpack.js.org/configuration/output/#output-publicpath).
   * default: "".
 * `-v|--verbose`: display webpack build output.
