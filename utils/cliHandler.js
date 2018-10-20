@@ -12,6 +12,8 @@ module.exports = meow(
 
       -p, --public-path Public URL.
 
+      --react-scripts-version Version of the react-scripts package used in your project i.e 2.0.3. If not given it will be implied from your package.json and if it cannot be implied the major version 2 will be the default.
+
       -v, --verbose
 
     Examples
@@ -26,6 +28,9 @@ module.exports = meow(
       'public-path': {
         type: 'string',
         alias: 'p',
+      },
+      'react-scripts-version': {
+        type: 'string',
       },
       verbose: {
         type: 'boolean',
