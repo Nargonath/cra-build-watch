@@ -6,9 +6,11 @@ const importCwd = require('import-cwd');
 const fs = require('fs-extra');
 const path = require('path');
 const ora = require('ora');
+
 const {
-  flags: { buildPath, publicPath, verbose },
+  flags: { buildPath, publicPath, reactScriptsVersion, verbose },
 } = require('../utils/cliHandler');
+const { getReactScriptsMajorVersion } = require('../utils');
 const paths = importCwd('react-scripts/config/paths');
 const webpack = importCwd('webpack');
 const config = importCwd('react-scripts/config/webpack.config.dev.js');
@@ -37,8 +39,15 @@ config.output.filename = `js/bundle.js`;
 config.output.chunkFilename = `js/[name].chunk.js`;
 
 // update media path destination
-config.module.rules[3].oneOf[0].options.name = `media/[name].[hash:8].[ext]`;
-config.module.rules[3].oneOf[7].options.name = `media/[name].[hash:8].[ext]`;
+const reactScriptsMajorVersion = getReactScriptsMajorVersion(reactScriptsVersion);
+if (reactScriptsMajorVersion >= 2) {
+  config.module.rules[3].oneOf[0].options.name = `media/[name].[hash:8].[ext]`;
+  config.module.rules[3].oneOf[7].options.name = `media/[name].[hash:8].[ext]`;
+} else {
+  config.module.rules[1].oneOf[0].options.name = `media/[name].[hash:8].[ext]`;
+  config.module.rules[1].oneOf[3].options.name = `media/[name].[hash:8].[ext]`;
+}
+
 config.plugins[1] = new HtmlWebpackPlugin({
   inject: true,
   template: paths.appHtml,
