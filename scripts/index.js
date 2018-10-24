@@ -10,7 +10,7 @@ const ora = require('ora');
 const {
   flags: { buildPath, publicPath, reactScriptsVersion, verbose },
 } = require('../utils/cliHandler');
-const { getReactScriptsMajorVersion } = require('../utils');
+const { getReactScriptsVersion } = require('../utils');
 const paths = importCwd('react-scripts/config/paths');
 const webpack = importCwd('webpack');
 const config = importCwd('react-scripts/config/webpack.config.dev.js');
@@ -39,10 +39,14 @@ config.output.filename = `js/bundle.js`;
 config.output.chunkFilename = `js/[name].chunk.js`;
 
 // update media path destination
-const reactScriptsMajorVersion = getReactScriptsMajorVersion(reactScriptsVersion);
-if (reactScriptsMajorVersion >= 2) {
-  config.module.rules[3].oneOf[0].options.name = `media/[name].[hash:8].[ext]`;
-  config.module.rules[3].oneOf[7].options.name = `media/[name].[hash:8].[ext]`;
+const parsedReactScriptsVersion = getReactScriptsVersion(reactScriptsVersion);
+
+if (parsedReactScriptsVersion.major >= 2) {
+  const minor = parsedReactScriptsVersion.minor;
+  const patch = parsedReactScriptsVersion.patch;
+  const oneOfIndex = minor >= 1 || patch >= 4 ? 2 : 3;
+  config.module.rules[oneOfIndex].oneOf[0].options.name = `media/[name].[hash:8].[ext]`;
+  config.module.rules[oneOfIndex].oneOf[7].options.name = `media/[name].[hash:8].[ext]`;
 } else {
   config.module.rules[1].oneOf[0].options.name = `media/[name].[hash:8].[ext]`;
   config.module.rules[1].oneOf[3].options.name = `media/[name].[hash:8].[ext]`;
