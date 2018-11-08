@@ -13,11 +13,18 @@ const {
 const { getReactScriptsVersion } = require('../utils');
 const paths = importCwd('react-scripts/config/paths');
 const webpack = importCwd('webpack');
-const config = importCwd('react-scripts/config/webpack.config.dev.js');
+const config = importCwd('react-scripts/config/webpack.config.dev');
 const HtmlWebpackPlugin = importCwd('html-webpack-plugin');
+const InterpolateHtmlPlugin = importCwd('react-dev-utils/InterpolateHtmlPlugin');
+const getClientEnvironment = importCwd('react-scripts/config/env');
 
 console.log();
 const spinner = ora('Update webpack configuration').start();
+
+// we need to set the public_url ourselves because in dev mode
+// it is supposed to always be an empty string as they are using
+// the in-memory development server to serve the content
+const env = getClientEnvironment(process.env.PUBLIC_URL || ''); // eslint-disable-line no-process-env
 
 /**
  * We need to update the webpack dev config in order to remove the use of webpack devserver
@@ -39,11 +46,9 @@ config.output.filename = `js/bundle.js`;
 config.output.chunkFilename = `js/[name].chunk.js`;
 
 // update media path destination
-const parsedReactScriptsVersion = getReactScriptsVersion(reactScriptsVersion);
+const { major, minor, patch } = getReactScriptsVersion(reactScriptsVersion);
 
-if (parsedReactScriptsVersion.major >= 2) {
-  const minor = parsedReactScriptsVersion.minor;
-  const patch = parsedReactScriptsVersion.patch;
+if (major >= 2) {
   const oneOfIndex = minor >= 1 || patch >= 4 ? 2 : 3;
   config.module.rules[oneOfIndex].oneOf[0].options.name = `media/[name].[hash:8].[ext]`;
   config.module.rules[oneOfIndex].oneOf[7].options.name = `media/[name].[hash:8].[ext]`;
@@ -52,7 +57,17 @@ if (parsedReactScriptsVersion.major >= 2) {
   config.module.rules[1].oneOf[3].options.name = `media/[name].[hash:8].[ext]`;
 }
 
-config.plugins[1] = new HtmlWebpackPlugin({
+let htmlPluginIndex = 1;
+let interpolateHtmlPluginIndex = 0;
+if (major >= 2) {
+  htmlPluginIndex = 0;
+  interpolateHtmlPluginIndex = 1;
+}
+
+// we need to override the InterpolateHtmlPlugin because in dev mod
+// they don't provide it the PUBLIC_URL env
+config.plugins[interpolateHtmlPluginIndex] = new InterpolateHtmlPlugin(HtmlWebpackPlugin, env.raw);
+config.plugins[htmlPluginIndex] = new HtmlWebpackPlugin({
   inject: true,
   template: paths.appHtml,
   filename: 'index.html',
