@@ -1,4 +1,7 @@
 {
   "extends": ["@dixeed/eslint-config"],
-  "env": { "jest": true }
+  "env": { "jest": true },
+  "rules": {
+    "no-sync": "off"
+  }
 }
