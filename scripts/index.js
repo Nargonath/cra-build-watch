@@ -10,13 +10,17 @@ const ora = require('ora');
 const {
   flags: { buildPath, publicPath, reactScriptsVersion, verbose },
 } = require('../utils/cliHandler');
-const { getReactScriptsVersion } = require('../utils');
-const paths = importCwd('react-scripts/config/paths');
+const { getReactScriptsVersion, isEjected } = require('../utils');
+const paths = isEjected ? importCwd('./config/paths') : importCwd('react-scripts/config/paths');
 const webpack = importCwd('webpack');
-const config = importCwd('react-scripts/config/webpack.config.dev');
+const config = isEjected
+  ? importCwd('./config/webpack.config.dev')
+  : importCwd('react-scripts/config/webpack.config.dev');
 const HtmlWebpackPlugin = importCwd('html-webpack-plugin');
 const InterpolateHtmlPlugin = importCwd('react-dev-utils/InterpolateHtmlPlugin');
-const getClientEnvironment = importCwd('react-scripts/config/env');
+const getClientEnvironment = isEjected
+  ? importCwd('./config/env')
+  : importCwd('react-scripts/config/env');
 
 console.log();
 const spinner = ora('Update webpack configuration').start();

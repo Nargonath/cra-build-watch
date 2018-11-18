@@ -20,6 +20,10 @@ This script is meant as a temporary workaround for `create-react-app` project ba
 
 This script is inspired by other work related such as: https://gist.github.com/jasonblanchard/ae0d2e304a647cd847c0b4493c2353d4.
 
+## Ejection
+
+This tool handles ejected projects but it assumes you did not modify your `webpack.config.dev.js` file, `paths.js` and `env.js` utils. If you did I cannot guarantee that this tool will work.
+
 # Why do I need this?
 
 As of now (20/04/2018), `create-react-app` (more precisely `react-scripts`) does not allow development builds to be written to the disk because it uses `webpackDevServer` to serve your build files and folders ([for good reasons](https://github.com/facebook/create-react-app/issues/1070#issuecomment-261812303)). The problem is that in some cases you need to have these files written to the disk i.e:
@@ -78,7 +82,7 @@ If those defaults do not work for you, the script accepts some arguments:
 
 * `-b|--build-path`: expects either an absolute or relative path. If a relative path is given it will be prefixed by your project root path.
   * default: `yourProjectRoot/build`.
-* `--react-scripts-version`: expects the `react-scripts` version you are using in your project i.e `2.0.3`. If not given it will be implied from your package.json and if it cannot be implied the version `2.0.4` will be the default.
+* `--react-scripts-version`: expects the `react-scripts` version you are using in your project i.e `2.0.3`. If not given it will be implied from your package.json and if it cannot be implied the version `2.0.4` will be the default. Consider setting it if you ejected.
 * `-p|--public-path`: expects a relative URL where `/` is the root. If you serve your files using an external webserver this argument is to match with your web server configuration. More information can be found in [webpack configuration guide](https://webpack.js.org/configuration/output/#output-publicpath).
   * default: "".
 * `-v|--verbose`: display webpack build output.
