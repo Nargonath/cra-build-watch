@@ -14,8 +14,8 @@ const { getReactScriptsVersion, isEjected } = require('../utils');
 const paths = isEjected ? importCwd('./config/paths') : importCwd('react-scripts/config/paths');
 const webpack = importCwd('webpack');
 const config = isEjected
-  ? importCwd('./config/webpack.config.dev')
-  : importCwd('react-scripts/config/webpack.config.dev');
+  ? importCwd('./config/webpack.config')('development')
+  : importCwd('react-scripts/config/webpack.config')('development');
 const HtmlWebpackPlugin = importCwd('html-webpack-plugin');
 const InterpolateHtmlPlugin = importCwd('react-dev-utils/InterpolateHtmlPlugin');
 const getClientEnvironment = isEjected

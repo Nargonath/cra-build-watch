@@ -22,7 +22,7 @@ This script is inspired by other work related such as: https://gist.github.com/j
 
 ## Ejection
 
-This tool handles ejected projects but it assumes you did not modify your `webpack.config.dev.js` file, `paths.js` and `env.js` utils. If you did I cannot guarantee that this tool will work.
+This tool handles ejected projects but it assumes you did not modify your `webpack.config.js` file, `paths.js` and `env.js` utils. If you did I cannot guarantee that this tool will work.
 
 # Why do I need this?
 
