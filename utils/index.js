@@ -11,7 +11,7 @@ const DEFAULT_VERSION = {
   patch: 4,
 };
 
-exports.isEjected = fs.pathExistsSync(path.join(process.cwd(), 'config/webpack.config.dev.js'));
+exports.isEjected = fs.pathExistsSync(path.join(process.cwd(), 'config/paths.js'))
 
 exports.getReactScriptsVersion = function getReactScriptsVersion(cliVersion) {
   if (cliVersion) {
@@ -29,10 +29,11 @@ exports.getReactScriptsVersion = function getReactScriptsVersion(cliVersion) {
   }
 
   const { dependencies } = packageJson;
+  const reactScriptsVersionString = /^[~^]?([.0-9]+)$/.exec(dependencies['react-scripts'])[1];
   const versions = {
-    major: Number(semver.major(dependencies['react-scripts'])),
-    minor: Number(semver.minor(dependencies['react-scripts'])),
-    patch: Number(semver.patch(dependencies['react-scripts'])),
+    major: Number(semver.major(reactScriptsVersionString)),
+    minor: Number(semver.minor(reactScriptsVersionString)),
+    patch: Number(semver.patch(reactScriptsVersionString)),
   };
   return versions;
 };
