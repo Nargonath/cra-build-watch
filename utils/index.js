@@ -11,7 +11,7 @@ const DEFAULT_VERSION = {
   patch: 4,
 };
 
-exports.isEjected = fs.pathExistsSync(path.join(process.cwd(), 'config/webpack.config.dev.js'));
+exports.isEjected = fs.pathExistsSync(path.join(process.cwd(), 'config/paths.js'))
 
 exports.getReactScriptsVersion = function getReactScriptsVersion(cliVersion) {
   if (cliVersion) {
