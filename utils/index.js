@@ -13,7 +13,7 @@ const DEFAULT_VERSION = {
 
 exports.isEjected = fs.pathExistsSync(path.join(process.cwd(), 'config/paths.js'))
 
-exports.getReactScriptsVersion = function (cliVersion) {
+exports.getReactScriptsVersion = function getReactScriptsVersion(cliVersion) {
   if (cliVersion) {
     const versions = {
       major: Number(semver.major(cliVersion)),
