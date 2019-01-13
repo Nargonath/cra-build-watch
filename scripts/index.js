@@ -11,11 +11,21 @@ const {
   flags: { buildPath, publicPath, reactScriptsVersion, verbose },
 } = require('../utils/cliHandler');
 const { getReactScriptsVersion, isEjected } = require('../utils');
+
+const { major, minor, patch } = getReactScriptsVersion(reactScriptsVersion);
+
 const paths = isEjected ? importCwd('./config/paths') : importCwd('react-scripts/config/paths');
 const webpack = importCwd('webpack');
-const config = isEjected
-  ? importCwd('./config/webpack.config.dev')
-  : importCwd('react-scripts/config/webpack.config.dev');
+
+const config =
+  major >= 2 && minor >= 1 && patch >= 2
+    ? (isEjected
+        ? importCwd('./config/webpack.config')
+        : importCwd('react-scripts/config/webpack.config'))('development')
+    : isEjected
+      ? importCwd('./config/webpack.config.dev')
+      : importCwd('react-scripts/config/webpack.config.dev');
+
 const HtmlWebpackPlugin = importCwd('html-webpack-plugin');
 const InterpolateHtmlPlugin = importCwd('react-dev-utils/InterpolateHtmlPlugin');
 const getClientEnvironment = isEjected
@@ -50,10 +60,17 @@ config.output.filename = `js/bundle.js`;
 config.output.chunkFilename = `js/[name].chunk.js`;
 
 // update media path destination
-const { major, minor, patch } = getReactScriptsVersion(reactScriptsVersion);
-
 if (major >= 2) {
-  const oneOfIndex = minor >= 1 || patch >= 4 ? 2 : 3;
+  // 2.0.0 => 2
+  // 2.0.1 => 3
+  // 2.0.2 => 3
+  // 2.0.3 => 3
+  // 2.0.4 => 2
+  // 2.1.0 => 2
+  // 2.1.1 => 2
+  // 2.1.2 => 2
+  // 2.1.3 => 2
+  const oneOfIndex = minor === 0 && patch < 4 && patch >= 1 ? 3 : 2;
   config.module.rules[oneOfIndex].oneOf[0].options.name = `media/[name].[hash:8].[ext]`;
   config.module.rules[oneOfIndex].oneOf[7].options.name = `media/[name].[hash:8].[ext]`;
 } else {
