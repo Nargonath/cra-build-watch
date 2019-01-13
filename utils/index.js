@@ -7,11 +7,11 @@ const path = require('path');
 
 const DEFAULT_VERSION = {
   major: 2,
-  minor: 0,
-  patch: 4,
+  minor: 1,
+  patch: 2,
 };
 
-exports.isEjected = fs.pathExistsSync(path.join(process.cwd(), 'config/paths.js'))
+exports.isEjected = fs.pathExistsSync(path.join(process.cwd(), 'config/paths.js'));
 
 exports.getReactScriptsVersion = function getReactScriptsVersion(cliVersion) {
   if (cliVersion) {
@@ -23,16 +23,16 @@ exports.getReactScriptsVersion = function getReactScriptsVersion(cliVersion) {
     return versions;
   }
 
-  const packageJson = importCwd.silent('./package.json');
-  if (!packageJson || !packageJson.dependencies['react-scripts']) {
+  const reactScriptsPkg = importCwd.silent('react-scripts/package.json');
+  if (!reactScriptsPkg || !reactScriptsPkg.version) {
     return DEFAULT_VERSION;
   }
 
-  const { dependencies } = packageJson;
+  const { version } = reactScriptsPkg;
   const versions = {
-    major: Number(semver.major(dependencies['react-scripts'])),
-    minor: Number(semver.minor(dependencies['react-scripts'])),
-    patch: Number(semver.patch(dependencies['react-scripts'])),
+    major: Number(semver.major(version)),
+    minor: Number(semver.minor(version)),
+    patch: Number(semver.patch(version)),
   };
   return versions;
 };
