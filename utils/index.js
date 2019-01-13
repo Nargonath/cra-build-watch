@@ -7,8 +7,8 @@ const path = require('path');
 
 const DEFAULT_VERSION = {
   major: 2,
-  minor: 0,
-  patch: 4,
+  minor: 1,
+  patch: 2,
 };
 
 exports.isEjected = fs.pathExistsSync(path.join(process.cwd(), 'config/paths.js'));
