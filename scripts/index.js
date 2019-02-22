@@ -6,7 +6,7 @@ const importCwd = require('import-cwd');
 const fs = require('fs-extra');
 const path = require('path');
 const ora = require('ora');
-const merge = require("webpack-merge");
+const merge = require('webpack-merge');
 
 const {
   flags: { buildPath, publicPath, reactScriptsVersion, verbose },
@@ -17,6 +17,7 @@ const { major, minor, patch } = getReactScriptsVersion(reactScriptsVersion);
 
 const paths = isEjected ? importCwd('./config/paths') : importCwd('react-scripts/config/paths');
 const webpack = importCwd('webpack');
+const WebpackDevServer = importCwd('webpack-dev-server');
 
 const common =
   major >= 2 && minor >= 1 && patch >= 2
@@ -28,10 +29,7 @@ const common =
       : importCwd('react-scripts/config/webpack.config.dev');
 
 const config = merge(common, {
-  devServer: {
-    writeToDisk: true,
-    disableHostCheck: true,
-  }
+  entry: ['webpack-dev-server/client?http://localhost:8080', 'webpack/hot/dev-server'],
 });
 
 const HtmlWebpackPlugin = importCwd('html-webpack-plugin');
@@ -50,12 +48,9 @@ const env = getClientEnvironment(process.env.PUBLIC_URL || ''); // eslint-disabl
 
 /**
  * We need to update the webpack dev config in order to remove the use of webpack devserver
- 
+ */
+
 config.entry = config.entry.filter(fileName => !fileName.match(/webpackHotDevClient/));
-config.plugins = config.plugins.filter(
-  plugin => !(plugin instanceof webpack.HotModuleReplacementPlugin)
-);
-*/
 
 /**
  * We also need to update the path where the different files get generated.
@@ -114,36 +109,19 @@ fs
     spinner.succeed();
 
     return new Promise((resolve, reject) => {
-      const webpackCompiler = webpack(config);
-      webpackCompiler.apply(
-        new webpack.ProgressPlugin(() => {
-          if (!inProgress) {
-            spinner.start('Start webpack watch');
-            inProgress = true;
-          }
-        })
-      );
+      const options = {
+        writeToDisk: true,
+        hot: true,
+        disableHostCheck: true,
+      };
 
-      webpackCompiler.watch({}, (err, stats) => {
+      const server = new WebpackDevServer(webpack(config), options);
+      const port = 8080;
+      server.listen(port, 'localhost', function(err) {
         if (err) {
-          return reject(err);
+          reject(err);
         }
-
-        spinner.succeed();
-        inProgress = false;
-
-        if (verbose) {
-          console.log();
-          console.log(
-            stats.toString({
-              chunks: false,
-              colors: true,
-            })
-          );
-          console.log();
-        }
-
-        return resolve();
+        resolve('WebpackDevServer listening at localhost:' + port);
       });
     });
   })
