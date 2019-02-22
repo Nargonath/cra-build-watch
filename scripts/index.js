@@ -28,10 +28,6 @@ const common =
       : importCwd('react-scripts/config/webpack.config.dev');
 
 const config = merge(common, {
-  entry: [
-    '/Users/apanizo/git/iov/ponferrada/node_modules/webpack-dev-server/client?/',
-    '/Users/apanizo/git/iov/ponferrada/node_modules/webpack/hot/dev-server',
-  ],
   devServer: {
     writeToDisk: true,
     disableHostCheck: true,
@@ -118,7 +114,7 @@ fs
     spinner.succeed();
 
     return new Promise((resolve, reject) => {
-      const webpackCompiler = webpack(config);      
+      const webpackCompiler = webpack(config);
       webpackCompiler.apply(
         new webpack.ProgressPlugin(() => {
           if (!inProgress) {
