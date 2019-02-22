@@ -6,6 +6,7 @@ const importCwd = require('import-cwd');
 const fs = require('fs-extra');
 const path = require('path');
 const ora = require('ora');
+const merge = require("webpack-merge");
 
 const {
   flags: { buildPath, publicPath, reactScriptsVersion, verbose },
@@ -17,7 +18,7 @@ const { major, minor, patch } = getReactScriptsVersion(reactScriptsVersion);
 const paths = isEjected ? importCwd('./config/paths') : importCwd('react-scripts/config/paths');
 const webpack = importCwd('webpack');
 
-const config =
+const common =
   major >= 2 && minor >= 1 && patch >= 2
     ? (isEjected
         ? importCwd('./config/webpack.config')
@@ -25,6 +26,17 @@ const config =
     : isEjected
       ? importCwd('./config/webpack.config.dev')
       : importCwd('react-scripts/config/webpack.config.dev');
+
+const config = merge(common, {
+  entry: [
+    '/Users/apanizo/git/iov/ponferrada/node_modules/webpack-dev-server/client?/',
+    '/Users/apanizo/git/iov/ponferrada/node_modules/webpack/hot/dev-server',
+  ],
+  devServer: {
+    writeToDisk: true,
+    disableHostCheck: true,
+  }
+});
 
 const HtmlWebpackPlugin = importCwd('html-webpack-plugin');
 const InterpolateHtmlPlugin = importCwd('react-dev-utils/InterpolateHtmlPlugin');
@@ -42,11 +54,12 @@ const env = getClientEnvironment(process.env.PUBLIC_URL || ''); // eslint-disabl
 
 /**
  * We need to update the webpack dev config in order to remove the use of webpack devserver
- */
+ 
 config.entry = config.entry.filter(fileName => !fileName.match(/webpackHotDevClient/));
 config.plugins = config.plugins.filter(
   plugin => !(plugin instanceof webpack.HotModuleReplacementPlugin)
 );
+*/
 
 /**
  * We also need to update the path where the different files get generated.
@@ -105,7 +118,7 @@ fs
     spinner.succeed();
 
     return new Promise((resolve, reject) => {
-      const webpackCompiler = webpack(config);
+      const webpackCompiler = webpack(config);      
       webpackCompiler.apply(
         new webpack.ProgressPlugin(() => {
           if (!inProgress) {

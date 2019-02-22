@@ -4,7 +4,11 @@
   "description": "A script for create-react-app that writes development builds to the disk",
   "main": "scripts/index.js",
   "bin": "bin/cra-build-watch.js",
-  "files": ["bin", "scripts", "utils"],
+  "files": [
+    "bin",
+    "scripts",
+    "utils"
+  ],
   "engines": {
     "node": ">=6.0.0"
   },
@@ -22,7 +26,10 @@
     }
   },
   "lint-staged": {
-    "{{bin,scripts,utils}/**/*.{js,json},*.{js,json}}": ["prettier --write", "git add"]
+    "{{bin,scripts,utils}/**/*.{js,json},*.{js,json}}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "prettier": {
     "printWidth": 100,
@@ -61,7 +68,8 @@
     "jest": "22.4.3",
     "lint-staged": "7.0.4",
     "prettier": "1.12.1",
-    "travis-deploy-once": "^4.4.1"
+    "travis-deploy-once": "^4.4.1",
+    "webpack-merge": "^4.2.1"
   },
   "dependencies": {
     "cross-spawn": "6.0.5",
