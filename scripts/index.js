@@ -28,8 +28,19 @@ const common =
       ? importCwd('./config/webpack.config.dev')
       : importCwd('react-scripts/config/webpack.config.dev');
 
+const contentScript = process.cwd() + "/src/extension/contentscript.ts";
+const backgroundScript = process.cwd() + "/src/extension/backgroundscript.ts";
+
+/**
+ * We need to update the webpack dev config in order to remove the use of webpack devserver
+ */
+common.entry = common.entry.filter(fileName => !fileName.match(/webpackHotDevClient/));
 const config = merge(common, {
-  entry: ['webpack-dev-server/client?http://localhost:8080', 'webpack/hot/dev-server'],
+  entry: {
+    main: [...common.entry, 'webpack-dev-server/client?http://localhost:8080', 'webpack/hot/dev-server'],
+    contentScript,
+    backgroundScript,
+  }
 });
 
 const HtmlWebpackPlugin = importCwd('html-webpack-plugin');
@@ -38,7 +49,6 @@ const getClientEnvironment = isEjected
   ? importCwd('./config/env')
   : importCwd('react-scripts/config/env');
 
-console.log();
 const spinner = ora('Update webpack configuration').start();
 
 // we need to set the public_url ourselves because in dev mode
@@ -46,12 +56,8 @@ const spinner = ora('Update webpack configuration').start();
 // the in-memory development server to serve the content
 const env = getClientEnvironment(process.env.PUBLIC_URL || ''); // eslint-disable-line no-process-env
 
-/**
- * We need to update the webpack dev config in order to remove the use of webpack devserver
- */
 
-config.entry = config.entry.filter(fileName => !fileName.match(/webpackHotDevClient/));
-
+console.log(config.entry);
 /**
  * We also need to update the path where the different files get generated.
  */
@@ -60,8 +66,19 @@ const resolvedBuildPath = buildPath ? handleBuildPath(buildPath) : paths.appBuil
 // update the paths in config
 config.output.path = resolvedBuildPath;
 config.output.publicPath = publicPath || '';
-config.output.filename = `js/bundle.js`;
+config.output.filename = `js/[name].js`;
 config.output.chunkFilename = `js/[name].chunk.js`;
+
+// config.output.filename = "static/js/[name].js";
+
+config.optimization.splitChunks = {
+  cacheGroups: {
+      default: false,
+  },
+};
+
+config.optimization.runtimeChunk = false;
+
 
 // update media path destination
 if (major >= 2) {
