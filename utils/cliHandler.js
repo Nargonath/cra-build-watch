@@ -12,9 +12,11 @@ module.exports = meow(
 
       -p, --public-path Public URL.
 
-      --react-scripts-version Version of the react-scripts package used in your project i.e 2.0.3. If not given it will be implied from your package.json and if it cannot be implied the major version 2 will be the default.
+      -cs, --content-script relative URL of your content script: src/extension/contentscript.ts
 
-      -v, --verbose
+      -bs, --background-script relative URL of your backgrounc script: src/extension/bacgkroundscript.ts
+
+      --react-scripts-version Version of the react-scripts package used in your project i.e 2.0.3. If not given it will be implied from your package.json and if it cannot be implied the major version 2 will be the default.
 
     Examples
       $ cra-build-watch -b dist/ -p /assets
@@ -29,12 +31,16 @@ module.exports = meow(
         type: 'string',
         alias: 'p',
       },
+      'content-script': {
+        type: 'string',
+        alias: 'cs',
+      },
+      'background-script': {
+        type: 'string',
+        alias: 'bs',
+      },
       'react-scripts-version': {
         type: 'string',
-      },
-      verbose: {
-        type: 'boolean',
-        alias: 'v',
       },
     },
   }
