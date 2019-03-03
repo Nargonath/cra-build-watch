@@ -76,18 +76,18 @@ const resolvedBuildPath = buildPath ? handleBuildPath(buildPath) : paths.appBuil
 // update the paths in config
 config.output.path = resolvedBuildPath;
 config.output.publicPath = publicPath || '';
-config.output.filename = `js/[name].js`;
-config.output.chunkFilename = `js/[name].chunk.js`;
+config.output.filename = chromeExtension ? 'js/[name].js' : 'js/bundle.js';
+config.output.chunkFilename = chromeExtension ? `js/[name].chunk.js` : undefined; // eslint-disable-line no-undefined
 
-// config.output.filename = "static/js/[name].js";
+if (chromeExtension) {
+  config.optimization.splitChunks = {
+    cacheGroups: {
+      default: false,
+    },
+  };
 
-config.optimization.splitChunks = {
-  cacheGroups: {
-    default: false,
-  },
-};
-
-config.optimization.runtimeChunk = false;
+  config.optimization.runtimeChunk = false;
+}
 
 // update media path destination
 if (major >= 2) {
