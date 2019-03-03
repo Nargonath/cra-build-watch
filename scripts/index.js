@@ -122,6 +122,7 @@ config.plugins[htmlPluginIndex] = new HtmlWebpackPlugin({
   inject: true,
   template: paths.appHtml,
   filename: 'index.html',
+  chunks: chromeExtension ? ['main'] : undefined, // eslint-disable-line no-undefined
 });
 
 spinner.succeed();
