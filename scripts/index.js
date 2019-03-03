@@ -6,10 +6,9 @@ const importCwd = require('import-cwd');
 const fs = require('fs-extra');
 const path = require('path');
 const ora = require('ora');
-const merge = require('webpack-merge');
 
 const {
-  flags: { buildPath, publicPath, reactScriptsVersion, verbose },
+  flags: { buildPath, publicPath, contentScript, backgroundScript, reactScriptsVersion },
 } = require('../utils/cliHandler');
 const { getReactScriptsVersion, isEjected } = require('../utils');
 
@@ -19,7 +18,7 @@ const paths = isEjected ? importCwd('./config/paths') : importCwd('react-scripts
 const webpack = importCwd('webpack');
 const WebpackDevServer = importCwd('webpack-dev-server');
 
-const common =
+const config =
   major >= 2 && minor >= 1 && patch >= 2
     ? (isEjected
         ? importCwd('./config/webpack.config')
@@ -28,20 +27,35 @@ const common =
       ? importCwd('./config/webpack.config.dev')
       : importCwd('react-scripts/config/webpack.config.dev');
 
-const contentScript = process.cwd() + "/src/extension/contentscript.ts";
-const backgroundScript = process.cwd() + "/src/extension/backgroundscript.ts";
+const spinner = ora('Update webpack configuration').start();
+
+const chromeExtension = Boolean(backgroundScript) && Boolean(contentScript);
+if (chromeExtension) {
+  spinner.info("Chrome extension watching detected")
+  spinner.info(`    backgoundScript[${backgroundScript}]`);
+  spinner.info(`    contentScript[${contentScript}]`);
+}
 
 /**
  * We need to update the webpack dev config in order to remove the use of webpack devserver
  */
-common.entry = common.entry.filter(fileName => !fileName.match(/webpackHotDevClient/));
-const config = merge(common, {
-  entry: {
-    main: [...common.entry, 'webpack-dev-server/client?http://localhost:8080', 'webpack/hot/dev-server'],
-    contentScript,
-    backgroundScript,
-  }
-});
+config.entry = config.entry.filter(fileName => !fileName.match(/webpackHotDevClient/));
+config.entry = Object.assign(
+  {},
+  {
+    main: [
+      ...config.entry,
+      'webpack-dev-server/client?http://localhost:8080',
+      'webpack/hot/dev-server',
+    ],
+  },
+  chromeExtension
+    ? {
+        contentScript: `${process.cwd()}/${contentScript}`,
+        backgroundScript: `${process.cwd()}/${backgroundScript}`,
+      }
+    : undefined // eslint-disable-line no-undefined
+);
 
 const HtmlWebpackPlugin = importCwd('html-webpack-plugin');
 const InterpolateHtmlPlugin = importCwd('react-dev-utils/InterpolateHtmlPlugin');
@@ -49,15 +63,11 @@ const getClientEnvironment = isEjected
   ? importCwd('./config/env')
   : importCwd('react-scripts/config/env');
 
-const spinner = ora('Update webpack configuration').start();
-
 // we need to set the public_url ourselves because in dev mode
 // it is supposed to always be an empty string as they are using
 // the in-memory development server to serve the content
 const env = getClientEnvironment(process.env.PUBLIC_URL || ''); // eslint-disable-line no-process-env
 
-
-console.log(config.entry);
 /**
  * We also need to update the path where the different files get generated.
  */
@@ -73,12 +83,11 @@ config.output.chunkFilename = `js/[name].chunk.js`;
 
 config.optimization.splitChunks = {
   cacheGroups: {
-      default: false,
+    default: false,
   },
 };
 
 config.optimization.runtimeChunk = false;
-
 
 // update media path destination
 if (major >= 2) {
@@ -118,8 +127,6 @@ config.plugins[htmlPluginIndex] = new HtmlWebpackPlugin({
 spinner.succeed();
 spinner.start('Clear destination folder');
 
-let inProgress = false;
-
 fs
   .emptyDir(paths.appBuild)
   .then(() => {
@@ -134,11 +141,11 @@ fs
 
       const server = new WebpackDevServer(webpack(config), options);
       const port = 8080;
-      server.listen(port, 'localhost', function(err) {
+      server.listen(port, 'localhost', err => {
         if (err) {
-          reject(err);
+          return reject(err);
         }
-        resolve('WebpackDevServer listening at localhost:' + port);
+        return resolve(`WebpackDevServer listening at localhost: ${port}`);
       });
     });
   })
