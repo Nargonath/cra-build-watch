@@ -9,6 +9,7 @@ const DEFAULT_VERSION = {
   major: 2,
   minor: 1,
   patch: 2,
+  concatenatedVersion: '212',
 };
 
 exports.isEjected = fs.pathExistsSync(path.join(process.cwd(), 'config/paths.js'));
@@ -19,6 +20,9 @@ exports.getReactScriptsVersion = function getReactScriptsVersion(cliVersion) {
       major: Number(semver.major(cliVersion)),
       minor: Number(semver.minor(cliVersion)),
       patch: Number(semver.patch(cliVersion)),
+      concatenatedVersion: `${semver.major(cliVersion)}${semver.minor(cliVersion)}${semver.patch(
+        cliVersion
+      )}`,
     };
     return versions;
   }
@@ -33,6 +37,7 @@ exports.getReactScriptsVersion = function getReactScriptsVersion(cliVersion) {
     major: Number(semver.major(version)),
     minor: Number(semver.minor(version)),
     patch: Number(semver.patch(version)),
+    concatenatedVersion: `${semver.major(version)}${semver.minor(version)}${semver.patch(version)}`,
   };
   return versions;
 };
