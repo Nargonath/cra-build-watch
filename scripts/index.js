@@ -12,19 +12,19 @@ const {
 } = require('../utils/cliHandler');
 const { getReactScriptsVersion, isEjected } = require('../utils');
 
-const { major, minor, patch } = getReactScriptsVersion(reactScriptsVersion);
+const { major, minor, patch, concatenatedVersion } = getReactScriptsVersion(reactScriptsVersion);
 
 const paths = isEjected ? importCwd('./config/paths') : importCwd('react-scripts/config/paths');
 const webpack = importCwd('webpack');
 
 const config =
-  major >= 2 && minor >= 1 && patch >= 2
+  Number(concatenatedVersion) >= 212
     ? (isEjected
         ? importCwd('./config/webpack.config')
         : importCwd('react-scripts/config/webpack.config'))('development')
     : isEjected
-      ? importCwd('./config/webpack.config.dev')
-      : importCwd('react-scripts/config/webpack.config.dev');
+    ? importCwd('./config/webpack.config.dev')
+    : importCwd('react-scripts/config/webpack.config.dev');
 
 const HtmlWebpackPlugin = importCwd('html-webpack-plugin');
 const InterpolateHtmlPlugin = importCwd('react-dev-utils/InterpolateHtmlPlugin');
@@ -99,8 +99,7 @@ spinner.start('Clear destination folder');
 
 let inProgress = false;
 
-fs
-  .emptyDir(paths.appBuild)
+fs.emptyDir(paths.appBuild)
   .then(() => {
     spinner.succeed();
 
