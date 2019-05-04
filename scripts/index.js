@@ -12,19 +12,19 @@ const {
 } = require('../utils/cliHandler');
 const { getReactScriptsVersion, isEjected } = require('../utils');
 
-const { major, minor, patch, concatenatedVersion } = getReactScriptsVersion(reactScriptsVersion);
+const { major, concatenatedVersion } = getReactScriptsVersion(reactScriptsVersion);
 
 const paths = isEjected ? importCwd('./config/paths') : importCwd('react-scripts/config/paths');
 const webpack = importCwd('webpack');
 
 const config =
-  Number(concatenatedVersion) >= 212
+  concatenatedVersion >= 212
     ? (isEjected
         ? importCwd('./config/webpack.config')
         : importCwd('react-scripts/config/webpack.config'))('development')
     : isEjected
-    ? importCwd('./config/webpack.config.dev')
-    : importCwd('react-scripts/config/webpack.config.dev');
+      ? importCwd('./config/webpack.config.dev')
+      : importCwd('react-scripts/config/webpack.config.dev');
 
 const HtmlWebpackPlugin = importCwd('html-webpack-plugin');
 const InterpolateHtmlPlugin = importCwd('react-dev-utils/InterpolateHtmlPlugin');
@@ -65,12 +65,8 @@ if (major >= 2) {
   // 2.0.1 => 3
   // 2.0.2 => 3
   // 2.0.3 => 3
-  // 2.0.4 => 2
-  // 2.1.0 => 2
-  // 2.1.1 => 2
-  // 2.1.2 => 2
-  // 2.1.3 => 2
-  const oneOfIndex = minor === 0 && patch < 4 && patch >= 1 ? 3 : 2;
+  // 2.0.4 to 3.0.0 => 2
+  const oneOfIndex = concatenatedVersion === 200 || concatenatedVersion >= 204 ? 2 : 3;
   config.module.rules[oneOfIndex].oneOf[0].options.name = `media/[name].[hash:8].[ext]`;
   config.module.rules[oneOfIndex].oneOf[7].options.name = `media/[name].[hash:8].[ext]`;
 } else {
@@ -99,7 +95,8 @@ spinner.start('Clear destination folder');
 
 let inProgress = false;
 
-fs.emptyDir(paths.appBuild)
+fs
+  .emptyDir(paths.appBuild)
   .then(() => {
     spinner.succeed();
 
