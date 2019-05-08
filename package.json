@@ -4,17 +4,25 @@
   "description": "A script for create-react-app that writes development builds to the disk",
   "main": "scripts/index.js",
   "bin": "bin/cra-build-watch.js",
-  "files": ["bin", "scripts", "utils"],
+  "files": [
+    "bin",
+    "scripts",
+    "utils"
+  ],
   "engines": {
     "node": ">=6.0.0"
   },
   "scripts": {
     "test": "jest",
     "cm": "git-cz",
-    "commitmsg": "commitlint -e",
-    "precommit": "lint-staged",
     "travis-deploy-once": "travis-deploy-once",
     "semantic-release": "semantic-release"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
   },
   "config": {
     "commitizen": {
@@ -22,7 +30,10 @@
     }
   },
   "lint-staged": {
-    "{{bin,scripts,utils}/**/*.{js,json},*.{js,json}}": ["prettier --write", "git add"]
+    "{{bin,scripts,utils}/**/*.{js,json},*.{js,json}}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "prettier": {
     "printWidth": 100,
@@ -51,16 +62,16 @@
     "react-scripts": ">= 1.0.x"
   },
   "devDependencies": {
-    "@commitlint/cli": "6.1.3",
-    "@commitlint/config-conventional": "6.1.3",
+    "@commitlint/cli": "7.6.0",
+    "@commitlint/config-conventional": "7.6.0",
     "@dixeed/eslint-config": "2.0.0",
-    "commitizen": "2.9.6",
+    "commitizen": "3.1.1",
     "cz-conventional-changelog": "2.1.0",
-    "eslint": "4.19.1",
-    "husky": "0.14.3",
-    "jest": "22.4.3",
-    "lint-staged": "7.0.4",
-    "prettier": "1.12.1",
+    "eslint": "5.16.0",
+    "husky": "2.2.0",
+    "jest": "^24.8.0",
+    "lint-staged": "8.1.6",
+    "prettier": "1.17.0",
     "travis-deploy-once": "^4.4.1"
   },
   "dependencies": {
