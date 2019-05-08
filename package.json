@@ -75,11 +75,11 @@
   },
   "dependencies": {
     "cross-spawn": "6.0.5",
-    "fs-extra": "5.0.0",
+    "fs-extra": "7.0.1",
     "html-webpack-plugin": "^3.2.0",
     "import-cwd": "2.1.0",
-    "meow": "4.0.0",
-    "ora": "2.0.0",
-    "semver": "^5.6.0"
+    "meow": "5.0.0",
+    "ora": "3.4.0",
+    "semver": "6.0.0"
   }
 }
