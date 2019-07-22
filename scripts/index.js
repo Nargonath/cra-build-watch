@@ -8,7 +8,7 @@ const path = require('path');
 const ora = require('ora');
 
 const {
-  flags: { buildPath, publicPath, reactScriptsVersion, verbose },
+  flags: { buildPath, publicPath, reactScriptsVersion, verbose, disableChunks },
 } = require('../utils/cliHandler');
 const { getReactScriptsVersion, isEjected } = require('../utils');
 
@@ -59,13 +59,16 @@ config.output.publicPath = publicPath || '';
 config.output.filename = `js/bundle.js`;
 config.output.chunkFilename = `js/[name].chunk.js`;
 
-config.optimization.runtimeChunk = false;
+if (disableChunks) {
+  // disable code-splitting/chunks
+  config.optimization.runtimeChunk = false;
 
-config.optimization.splitChunks = {
-  cacheGroups: {
-    default: false,
-  },
-};
+  config.optimization.splitChunks = {
+    cacheGroups: {
+      default: false,
+    },
+  };
+}
 
 // update media path destination
 if (major >= 2) {
