@@ -59,6 +59,14 @@ config.output.publicPath = publicPath || '';
 config.output.filename = `js/bundle.js`;
 config.output.chunkFilename = `js/[name].chunk.js`;
 
+config.optimization.runtimeChunk = false;
+
+config.optimization.splitChunks = {
+  cacheGroups: {
+    default: false,
+  },
+};
+
 // update media path destination
 if (major >= 2) {
   // 2.0.0 => 2
