@@ -6,9 +6,10 @@ const importCwd = require('import-cwd');
 const fs = require('fs-extra');
 const path = require('path');
 const ora = require('ora');
+const assert = require('assert');
 
 const {
-  flags: { buildPath, publicPath, reactScriptsVersion, verbose },
+  flags: { buildPath, publicPath, reactScriptsVersion, verbose, disableChunks },
 } = require('../utils/cliHandler');
 const { getReactScriptsVersion, isEjected } = require('../utils');
 
@@ -23,8 +24,8 @@ const config =
         ? importCwd('./config/webpack.config')
         : importCwd('react-scripts/config/webpack.config'))('development')
     : isEjected
-      ? importCwd('./config/webpack.config.dev')
-      : importCwd('react-scripts/config/webpack.config.dev');
+    ? importCwd('./config/webpack.config.dev')
+    : importCwd('react-scripts/config/webpack.config.dev');
 
 const HtmlWebpackPlugin = importCwd('html-webpack-plugin');
 const InterpolateHtmlPlugin = importCwd('react-dev-utils/InterpolateHtmlPlugin');
@@ -58,6 +59,18 @@ config.output.path = resolvedBuildPath;
 config.output.publicPath = publicPath || '';
 config.output.filename = `js/bundle.js`;
 config.output.chunkFilename = `js/[name].chunk.js`;
+
+if (disableChunks) {
+  assert(major >= 2, 'Split chunks optimization is only available in react-scripts >= 2.0.0');
+  // disable code-splitting/chunks
+  config.optimization.runtimeChunk = false;
+
+  config.optimization.splitChunks = {
+    cacheGroups: {
+      default: false,
+    },
+  };
+}
 
 // update media path destination
 if (major >= 2) {
@@ -95,8 +108,7 @@ spinner.start('Clear destination folder');
 
 let inProgress = false;
 
-fs
-  .emptyDir(paths.appBuild)
+fs.emptyDir(paths.appBuild)
   .then(() => {
     spinner.succeed();
 
