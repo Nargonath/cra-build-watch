@@ -28,9 +28,9 @@ This tool handles ejected projects but it assumes you did not modify your `webpa
 
 As of now (20/04/2018), `create-react-app` (more precisely `react-scripts`) does not allow development builds to be written to the disk because it uses `webpackDevServer` to serve your build files and folders ([for good reasons](https://github.com/facebook/create-react-app/issues/1070#issuecomment-261812303)). The problem is that in some cases you need to have these files written to the disk i.e:
 
-* Developing browser extensions using React.
-* Incorporating your React application into an existing application.
-* Serving your React app with a dedicated backend.
+- Developing browser extensions using React.
+- Incorporating your React application into an existing application.
+- Serving your React app with a dedicated backend.
 
 # Prerequisites
 
@@ -80,9 +80,10 @@ By default the script will generate everything into `build/` at your project roo
 
 If those defaults do not work for you, the script accepts some arguments:
 
-* `-b|--build-path`: expects either an absolute or relative path. If a relative path is given it will be prefixed by your project root path.
-  * default: `yourProjectRoot/build`.
-* `--react-scripts-version`: expects the `react-scripts` version you are using in your project i.e `2.0.3`. If not given it will be implied from your `node_modules` and if it cannot be implied the version `2.1.2` will be the default. Consider setting it if you **ejected** and are not using the latest `react-scripts` version.
-* `-p|--public-path`: expects a relative URL where `/` is the root. If you serve your files using an external webserver this argument is to match with your web server configuration. More information can be found in [webpack configuration guide](https://webpack.js.org/configuration/output/#output-publicpath).
-  * default: "".
-* `-v|--verbose`: display webpack build output.
+- `-b|--build-path`: expects either an absolute or relative path. If a relative path is given it will be prefixed by your project root path.
+  - default: `yourProjectRoot/build`.
+- `--disable-chunks`: disable code-splitting / chunks so that only a single bundle.js file is generated. It only works with `react-scripts` >= `2.0.0`.
+- `--react-scripts-version`: expects the `react-scripts` version you are using in your project i.e `2.0.3`. If not given it will be implied from your `node_modules` and if it cannot be implied the version `2.1.2` will be the default. Consider setting it if you **ejected** and are not using the latest `react-scripts` version.
+- `-p|--public-path`: expects a relative URL where `/` is the root. If you serve your files using an external webserver this argument is to match with your web server configuration. More information can be found in [webpack configuration guide](https://webpack.js.org/configuration/output/#output-publicpath).
+  - default: "".
+- `-v|--verbose`: display webpack build output.
