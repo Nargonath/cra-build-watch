@@ -14,7 +14,7 @@
   },
   "scripts": {
     "test": "jest",
-    "cm": "git-cz",
+    "cm": "npx git-cz",
     "travis-deploy-once": "travis-deploy-once",
     "semantic-release": "semantic-release"
   },
@@ -65,7 +65,6 @@
     "@commitlint/cli": "7.6.0",
     "@commitlint/config-conventional": "8.1.0",
     "@dixeed/eslint-config": "2.0.0",
-    "commitizen": "4.0.3",
     "cz-conventional-changelog": "2.1.0",
     "eslint": "5.16.0",
     "husky": "2.2.0",
