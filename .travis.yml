@@ -15,10 +15,7 @@ node_js:
   - '8'
 jobs:
   include:
-    - stage: test
-      install: yarn install --ignore-engines
     - stage: deploy
-      install: yarn install --ignore-engines
       node_js: '12'
       # required for yarn not to fail when installing semantic-release
       # instead it is removed from the dependencies and added as global at the end
