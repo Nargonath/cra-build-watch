@@ -10,7 +10,7 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![Build Status](https://travis-ci.org/Nargonath/cra-build-watch.svg?branch=master)](https://travis-ci.org/Nargonath/twitter-auth-await)
 [![npm version](https://badge.fury.io/js/cra-build-watch.svg)](https://badge.fury.io/js/cra-build-watch)
-[![dependabot](https://badgen.net/dependabot/dependabot/dependabot-core/?icon=dependabot)
+![dependabot](https://badgen.net/dependabot/dependabot/dependabot-core/?icon=dependabot)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Disclaimer
