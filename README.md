@@ -36,7 +36,7 @@ As of now (20/04/2018), `create-react-app` (more precisely `react-scripts`) does
 
 Supports `react-scripts >= 1.0.x`, hence it supports the newest version `3.x.x`.
 
-Supports `node > 8`.
+Supports `node >= 10`.
 
 # Installation
 
