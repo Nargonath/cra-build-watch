@@ -10,6 +10,7 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![Build Status](https://travis-ci.org/Nargonath/cra-build-watch.svg?branch=master)](https://travis-ci.org/Nargonath/twitter-auth-await)
 [![npm version](https://badge.fury.io/js/cra-build-watch.svg)](https://badge.fury.io/js/cra-build-watch)
+![dependabot](https://badgen.net/dependabot/dependabot/dependabot-core/?icon=dependabot)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Disclaimer
@@ -35,6 +36,8 @@ As of now (20/04/2018), `create-react-app` (more precisely `react-scripts`) does
 # Prerequisites
 
 Supports `react-scripts >= 1.0.x`, hence it supports the newest version `3.x.x`.
+
+Supports `node >= 10`.
 
 # Installation
 
@@ -87,3 +90,7 @@ If those defaults do not work for you, the script accepts some arguments:
 - `-p|--public-path`: expects a relative URL where `/` is the root. If you serve your files using an external webserver this argument is to match with your web server configuration. More information can be found in [webpack configuration guide](https://webpack.js.org/configuration/output/#output-publicpath).
   - default: "".
 - `-v|--verbose`: display webpack build output.
+
+# Contributions
+
+All contributions are welcomed. Please base your PR on the `develop` branch rather than `master`.
