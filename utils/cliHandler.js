@@ -17,6 +17,8 @@ module.exports = meow(
       --react-scripts-version Version of the react-scripts package used in your project i.e 2.0.3. If not given it will be implied from your package.json and if it cannot be implied the major version 2 will be the default.
 
       -v, --verbose
+
+      -o, --output-folder Output folder for bundled build files under build path.  Defaults to 'js' folder.
       
     Examples
       $ cra-build-watch -b dist/ -p /assets
@@ -41,6 +43,10 @@ module.exports = meow(
       'disable-chunks': {
         type: 'boolean',
       },
+      'output-folder': {
+        type: 'string',
+        alias: 'o'
+      }
     },
   }
 );

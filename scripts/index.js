@@ -9,7 +9,7 @@ const ora = require('ora');
 const assert = require('assert');
 
 const {
-  flags: { buildPath, publicPath, reactScriptsVersion, verbose, disableChunks },
+  flags: { buildPath, publicPath, reactScriptsVersion, verbose, disableChunks, outputFolder },
 } = require('../utils/cliHandler');
 const { getReactScriptsVersion, isEjected } = require('../utils');
 
@@ -54,11 +54,13 @@ config.plugins = config.plugins.filter(
  */
 const resolvedBuildPath = buildPath ? handleBuildPath(buildPath) : paths.appBuild; // resolve the build path
 
+const buildFolder = outputFolder || "js";
+
 // update the paths in config
 config.output.path = resolvedBuildPath;
 config.output.publicPath = publicPath || '';
-config.output.filename = `js/bundle.js`;
-config.output.chunkFilename = `js/[name].chunk.js`;
+config.output.filename = path.join(buildFolder, "bundle.js");
+config.output.chunkFilename = path.join(buildFolder, `[name].chunk.js`);
 
 if (disableChunks) {
   assert(major >= 2, 'Split chunks optimization is only available in react-scripts >= 2.0.0');
