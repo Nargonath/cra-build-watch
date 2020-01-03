@@ -63,7 +63,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "8.2.0",
-    "@commitlint/config-conventional": "8.2.0",
+    "@commitlint/config-conventional": "8.3.3",
     "@dixeed/eslint-config": "2.0.0",
     "cz-conventional-changelog": "3.0.2",
     "eslint": "6.6.0",
