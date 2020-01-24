@@ -114,14 +114,12 @@ fs.emptyDir(paths.appBuild)
 
     return new Promise((resolve, reject) => {
       const webpackCompiler = webpack(config);
-      webpackCompiler.apply(
-        new webpack.ProgressPlugin(() => {
-          if (!inProgress) {
-            spinner.start('Start webpack watch');
-            inProgress = true;
-          }
-        })
-      );
+      new webpack.ProgressPlugin(() => {
+        if (!inProgress) {
+          spinner.start('Start webpack watch');
+          inProgress = true;
+        }
+      }).apply(webpackCompiler);
 
       webpackCompiler.watch({}, (err, stats) => {
         if (err) {
