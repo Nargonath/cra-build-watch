@@ -87,7 +87,11 @@ If those defaults do not work for you, the script accepts some arguments:
 
 - `-b|--build-path`: expects either an absolute or relative path. If a relative path is given it will be prefixed by your project root path.
   - default: `yourProjectRoot/build`.
+- `--chunk-filename`: Set the naming you want to use for non-entry chunk files. Accepts webpack placeholders such as `[id]`, `[name]`, `[hash]`. Directories can be supplied.
+  - default: `js/bundle.js`.
 - `--disable-chunks`: disable code-splitting / chunks so that only a single bundle.js file is generated. It only works with `react-scripts` >= `2.0.0`.
+- `-o|--output-filename`: Set the name to be used for the output bundle. Accepts webpack placeholders such as `[id]`, `[name]`, `[hash]`. Directories can be supplied.
+  - default: `js/[name].chunk.js`
 - `--react-scripts-version`: expects the `react-scripts` version you are using in your project i.e `2.0.3`. If not given it will be implied from your `node_modules` and if it cannot be implied the version `2.1.2` will be the default. Consider setting it if you **ejected** and are not using the latest `react-scripts` version.
 - `-p|--public-path`: expects a relative URL where `/` is the root. If you serve your files using an external webserver this argument is to match with your web server configuration. More information can be found in [webpack configuration guide](https://webpack.js.org/configuration/output/#output-publicpath).
   - default: "".
