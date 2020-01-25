@@ -9,7 +9,15 @@ const ora = require('ora');
 const assert = require('assert');
 
 const {
-  flags: { buildPath, publicPath, reactScriptsVersion, verbose, disableChunks },
+  flags: {
+    buildPath,
+    publicPath,
+    reactScriptsVersion,
+    verbose,
+    disableChunks,
+    outputFilename,
+    chunkFilename,
+  },
 } = require('../utils/cliHandler');
 const { getReactScriptsVersion, isEjected } = require('../utils');
 
@@ -57,8 +65,14 @@ const resolvedBuildPath = buildPath ? handleBuildPath(buildPath) : paths.appBuil
 // update the paths in config
 config.output.path = resolvedBuildPath;
 config.output.publicPath = publicPath || '';
-config.output.filename = `js/bundle.js`;
-config.output.chunkFilename = `js/[name].chunk.js`;
+
+// Grab output names from cli args, otherwise use some default naming.
+const fileNameToUse = outputFilename ? `${outputFilename}` : `js/bundle.js`;
+const chunkNameToUse = chunkFilename ? `${chunkFilename}` : `js/[name].chunk.js`;
+// If cli user adds .js, respect that, otherwise we add it ourself
+config.output.filename = fileNameToUse.slice(-3) != '.js' ? fileNameToUse + '.js' : fileNameToUse;
+config.output.chunkFilename =
+  chunkNameToUse.slice(-3) != '.js' ? chunkNameToUse + '.js' : chunkNameToUse;
 
 if (disableChunks) {
   assert(major >= 2, 'Split chunks optimization is only available in react-scripts >= 2.0.0');
