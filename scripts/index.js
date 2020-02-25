@@ -172,5 +172,5 @@ function handleBuildPath(userBuildPath) {
     return userBuildPath;
   }
 
-  return path.join(process.cwd(), userBuildPath);
+  return path.resolve(userBuildPath);
 }
