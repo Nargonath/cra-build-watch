@@ -17,7 +17,8 @@ const {
     disableChunks,
     outputFilename,
     chunkFilename,
-    afterBuildHook,
+    afterInitialBuildHook,
+    afterRebuildHook,
   },
 } = require('../utils/cliHandler');
 const { getReactScriptsVersion, isEjected } = require('../utils');
@@ -142,6 +143,7 @@ fs.emptyDir(paths.appBuild)
         }
 
         spinner.succeed();
+        runHook(afterRebuildHook);
         inProgress = false;
 
         if (verbose) {
@@ -160,7 +162,7 @@ fs.emptyDir(paths.appBuild)
     });
   })
   .then(() => copyPublicFolder())
-  .then(() => runAfterBuildHook());
+  .then(() => runHook(afterInitialBuildHook));
 
 function copyPublicFolder() {
   return fs.copy(paths.appPublic, resolvedBuildPath, {
@@ -169,14 +171,14 @@ function copyPublicFolder() {
   });
 }
 
-function runAfterBuildHook() {
-  if (!afterBuildHook || typeof afterBuildHook !== 'string') {
+function runHook(hook) {
+  if (!hook || typeof hook !== 'string') {
     return;
   }
 
   const exec = require('child_process').exec;
 
-  const child = exec(afterBuildHook, (error, stdout, stderr) => {
+  const child = exec(hook, (error, stdout, stderr) => {
     console.log(`${stdout}`);
     console.log(`${stderr}`);
     if (error !== null) {
