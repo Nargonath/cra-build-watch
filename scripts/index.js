@@ -17,6 +17,7 @@ const {
     disableChunks,
     outputFilename,
     chunkFilename,
+    afterBuildHook,
   },
 } = require('../utils/cliHandler');
 const { getReactScriptsVersion, isEjected } = require('../utils');
@@ -158,12 +159,29 @@ fs.emptyDir(paths.appBuild)
       });
     });
   })
-  .then(() => copyPublicFolder());
+  .then(() => copyPublicFolder())
+  .then(() => runAfterBuildHook());
 
 function copyPublicFolder() {
   return fs.copy(paths.appPublic, resolvedBuildPath, {
     dereference: true,
     filter: file => file !== paths.appHtml,
+  });
+}
+
+function runAfterBuildHook() {
+  if (!afterBuildHook || typeof afterBuildHook !== 'string') {
+    return;
+  }
+
+  const exec = require('child_process').exec;
+
+  const child = exec(afterBuildHook, (error, stdout, stderr) => {
+    console.log(`${stdout}`);
+    console.log(`${stderr}`);
+    if (error !== null) {
+      console.log(`exec error: ${error}`);
+    }
   });
 }
 

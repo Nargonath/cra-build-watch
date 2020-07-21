@@ -18,6 +18,8 @@ module.exports = meow(
 
       -p, --public-path Public URL.
 
+      --after-build-hook Run a command after each build/rebuild (e.g. 'node ./afterbuild.js')
+
       --react-scripts-version Version of the react-scripts package used in your project i.e 2.0.3. If not given it will be implied from your package.json and if it cannot be implied the major version 2 will be the default.
 
       -v, --verbose
@@ -54,6 +56,9 @@ module.exports = meow(
         type: 'boolean',
         alias: 'v',
       },
+      'after-build-hook': {
+        type: 'string',
+      }
     },
   }
 );
