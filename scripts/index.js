@@ -7,6 +7,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const ora = require('ora');
 const assert = require('assert');
+const { exec } = require("child_process");
 
 const {
   flags: {
@@ -17,6 +18,7 @@ const {
     disableChunks,
     outputFilename,
     chunkFilename,
+    postbuild
   },
 } = require('../utils/cliHandler');
 const { getReactScriptsVersion, isEjected } = require('../utils');
@@ -152,6 +154,20 @@ fs.emptyDir(paths.appBuild)
             })
           );
           console.log();
+        }
+
+        if (postbuild) {
+          exec(postbuild, (error, stdout, stderr) => {
+            if (error) {
+              console.log(`error: ${error.message}`);
+              return;
+            }
+            if (stderr) {
+              console.log(`stderr: ${stderr}`);
+              return;
+            }
+            console.log(`stdout: ${stdout}`);
+          });
         }
 
         return resolve();
