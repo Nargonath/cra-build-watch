@@ -54,6 +54,10 @@ module.exports = meow(
         type: 'boolean',
         alias: 'v',
       },
+      postbuild: {
+        type: 'string',
+        alias: 'e'
+      }
     },
   }
 );
