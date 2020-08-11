@@ -7,7 +7,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const ora = require('ora');
 const assert = require('assert');
-const { exec } = require("child_process");
+const { exec } = require('child_process');
 
 const {
   flags: {
