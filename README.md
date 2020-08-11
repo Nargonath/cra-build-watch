@@ -96,6 +96,7 @@ If those defaults do not work for you, the script accepts some arguments:
 - `-p|--public-path`: expects a relative URL where `/` is the root. If you serve your files using an external webserver this argument is to match with your web server configuration. More information can be found in [webpack configuration guide](https://webpack.js.org/configuration/output/#output-publicpath).
   - default: "".
 - `-v|--verbose`: display webpack build output.
+- `-e|--postbuild`: run a script after each successful build. default: nothing to run. Example: `cra-build-watch -e "echo 'build is done'"`
 
 # Contributions
 
