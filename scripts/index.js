@@ -156,25 +156,28 @@ fs.emptyDir(paths.appBuild)
           console.log();
         }
 
-        if (postbuild) {
-          exec(postbuild, (error, stdout, stderr) => {
-            if (error) {
-              console.log(`error: ${error.message}`);
-              return;
-            }
-            if (stderr) {
-              console.log(`stderr: ${stderr}`);
-              return;
-            }
-            console.log(`stdout: ${stdout}`);
-          });
-        }
-
         return resolve();
       });
     });
   })
-  .then(() => copyPublicFolder());
+  .then(() => copyPublicFolder())
+  .then((resolve, reject) => {
+    if (postbuild) {
+      spinner.start('Running postbuild script');
+      exec(postbuild, (error, stdout, stderr) => {
+        if (error) {
+          spinner.failed(error.message);
+          reject(error);
+          return;
+        }
+        if (stderr) {
+          spinner.warn(`stderr: ${stderr.trim()}`);
+          return;
+        }
+        spinner.succeed();
+      });
+    }
+  });
 
 function copyPublicFolder() {
   return fs.copy(paths.appPublic, resolvedBuildPath, {
