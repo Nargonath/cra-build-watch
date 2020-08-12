@@ -123,6 +123,7 @@ spinner.succeed();
 spinner.start('Clear destination folder');
 
 let inProgress = false;
+let first = true;
 
 fs.emptyDir(paths.appBuild)
   .then(() => {
@@ -156,6 +157,23 @@ fs.emptyDir(paths.appBuild)
           console.log();
         }
 
+        if (postbuild && !first) {
+          spinner.start('Running postbuild script');
+          exec(postbuild, (error, stdout, stderr) => {
+            if (error) {
+              spinner.failed(error.message);
+              return;
+            }
+            if (stderr) {
+              spinner.warn(`stderr: ${stderr.trim()}`);
+              return;
+            }
+            spinner.succeed();
+          });
+        }
+
+        first = false;
+
         return resolve();
       });
     });
@@ -177,7 +195,8 @@ fs.emptyDir(paths.appBuild)
         spinner.succeed();
       });
     }
-  });
+  })
+;
 
 function copyPublicFolder() {
   return fs.copy(paths.appPublic, resolvedBuildPath, {
