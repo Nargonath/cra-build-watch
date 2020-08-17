@@ -98,6 +98,8 @@ If those defaults do not work for you, the script accepts some arguments:
 - `-v|--verbose`: display webpack build output.
 - `-e|--postbuild`: run a script after each successful build. Example: `cra-build-watch -e "echo 'build is done'"`
   - default: `""` (nothing to run)
+- `--run-once`: only build once and exit, to mimic a build process
+  - default: `false`  
 
 # Contributions
 
