@@ -57,6 +57,9 @@ module.exports = meow(
       postbuild: {
         type: 'string',
         alias: 'e'
+      },
+      'run-once': {
+        type: 'boolean',
       }
     },
   }
