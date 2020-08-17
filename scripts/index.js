@@ -18,7 +18,8 @@ const {
     disableChunks,
     outputFilename,
     chunkFilename,
-    postbuild
+    postbuild,
+    runOnce,
   },
 } = require('../utils/cliHandler');
 const { getReactScriptsVersion, isEjected } = require('../utils');
@@ -161,7 +162,7 @@ fs.emptyDir(paths.appBuild)
           spinner.start('Running postbuild script');
           exec(postbuild, (error, stdout, stderr) => {
             if (error) {
-              spinner.failed(error.message);
+              spinner.fail(error.message);
               return;
             }
             if (stderr) {
@@ -179,20 +180,25 @@ fs.emptyDir(paths.appBuild)
     });
   })
   .then(() => copyPublicFolder())
-  .then((resolve, reject) => {
+  .then(() => {
     if (postbuild) {
       spinner.start('Running postbuild script');
       exec(postbuild, (error, stdout, stderr) => {
-        if (error) {
-          spinner.failed(error.message);
-          reject(error);
-          return;
+        try {
+          if (error) {
+            spinner.fail(error.message);
+            return;
+          }
+          if (stderr) {
+            spinner.warn(`stderr: ${stderr.trim()}`);
+            return;
+          }
+          spinner.succeed();
+        } finally {
+          if (runOnce) {
+            process.exit(0);
+          }
         }
-        if (stderr) {
-          spinner.warn(`stderr: ${stderr.trim()}`);
-          return;
-        }
-        spinner.succeed();
       });
     }
   })
