@@ -21,6 +21,7 @@ const {
     chunkFilename,
     afterInitialBuildHook,
     afterRebuildHook,
+    skipCleanup,
   },
 } = require('../utils/cliHandler');
 const { getReactScriptsVersion, isEjected } = require('../utils');
@@ -129,49 +130,48 @@ config.plugins[htmlPluginIndex] = new HtmlWebpackPlugin({
 });
 
 spinner.succeed();
-spinner.start('Clear destination folder');
 
 let inProgress = false;
 
-fs.emptyDir(paths.appBuild)
-  .then(() => {
-    spinner.succeed();
+Promise.resolve()
+  .then(() => skipCleanup || clearDestinationFolder())
+  .then(
+    () =>
+      new Promise((resolve, reject) => {
+        const webpackCompiler = webpack(config);
+        new webpack.ProgressPlugin(() => {
+          if (!inProgress) {
+            spinner.start('Start webpack watch');
+            inProgress = true;
+          }
+        }).apply(webpackCompiler);
 
-    return new Promise((resolve, reject) => {
-      const webpackCompiler = webpack(config);
-      new webpack.ProgressPlugin(() => {
-        if (!inProgress) {
-          spinner.start('Start webpack watch');
-          inProgress = true;
-        }
-      }).apply(webpackCompiler);
+        webpackCompiler.watch({}, (err, stats) => {
+          if (err) {
+            return reject(err);
+          }
 
-      webpackCompiler.watch({}, (err, stats) => {
-        if (err) {
-          return reject(err);
-        }
+          spinner.succeed();
 
-        spinner.succeed();
+          runHook('after rebuild hook', spinner, afterRebuildHook);
 
-        runHook('after rebuild hook', spinner, afterRebuildHook);
+          inProgress = false;
 
-        inProgress = false;
+          if (verbose) {
+            console.log();
+            console.log(
+              stats.toString({
+                chunks: false,
+                colors: true,
+              })
+            );
+            console.log();
+          }
 
-        if (verbose) {
-          console.log();
-          console.log(
-            stats.toString({
-              chunks: false,
-              colors: true,
-            })
-          );
-          console.log();
-        }
-
-        return resolve();
-      });
-    });
-  })
+          return resolve();
+        });
+      })
+  )
   .then(() => copyPublicFolder())
   .then(() => runHook('after initial build hook', spinner, afterInitialBuildHook));
 
@@ -206,4 +206,9 @@ function handleBuildPath(userBuildPath) {
   }
 
   return path.join(process.cwd(), userBuildPath);
+}
+
+function clearDestinationFolder() {
+  spinner.start('Clear destination folder');
+  return fs.emptyDir(paths.appBuild).then(() => spinner.succeed());
 }

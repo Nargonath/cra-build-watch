@@ -63,7 +63,10 @@ module.exports = meow(
       },
       'after-rebuild-hook': {
         type: 'string',
-      }
+      },
+      'skip-cleanup': {
+        type: 'boolean',
+      },
     },
   }
 );
