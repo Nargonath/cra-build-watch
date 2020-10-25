@@ -97,6 +97,7 @@ If those defaults do not work for you, the script accepts some arguments:
 - `--react-scripts-version`: expects the `react-scripts` version you are using in your project i.e `2.0.3`. If not given it will be implied from your `node_modules` and if it cannot be implied the version `2.1.2` will be the default. Consider setting it if you **ejected** and are not using the latest `react-scripts` version.
 - `-p|--public-path`: expects a relative URL where `/` is the root. If you serve your files using an external webserver this argument is to match with your web server configuration. More information can be found in [webpack configuration guide](https://webpack.js.org/configuration/output/#output-publicpath).
   - default: "".
+- `--skip-cleanup`: Skips the initial cleanup of the build folder. Could be beneficial when the cleanup is handled beforehand and some other files are moved to the build folder before running this script.
 - `-v|--verbose`: display webpack build output.
 
 # Contributions
