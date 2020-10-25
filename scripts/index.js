@@ -1,6 +1,7 @@
 'use strict';
 
 process.env.NODE_ENV = 'development'; // eslint-disable-line no-process-env
+process.env.FAST_REFRESH = false;
 
 const importCwd = require('import-cwd');
 const fs = require('fs-extra');
