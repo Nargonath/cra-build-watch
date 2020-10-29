@@ -1,6 +1,7 @@
 'use strict';
 
 process.env.NODE_ENV = 'development'; // eslint-disable-line no-process-env
+process.env.FAST_REFRESH = false;
 
 const importCwd = require('import-cwd');
 const fs = require('fs-extra');
@@ -52,7 +53,9 @@ const env = getClientEnvironment(process.env.PUBLIC_URL || ''); // eslint-disabl
 /**
  * We need to update the webpack dev config in order to remove the use of webpack devserver
  */
-config.entry = config.entry.filter(fileName => !fileName.match(/webpackHotDevClient/));
+if (major < 4) {
+  config.entry = config.entry.filter(fileName => !fileName.match(/webpackHotDevClient/));
+}
 config.plugins = config.plugins.filter(
   plugin => !(plugin instanceof webpack.HotModuleReplacementPlugin)
 );
@@ -87,7 +90,13 @@ if (disableChunks) {
 }
 
 // update media path destination
-if (major >= 2) {
+if (major >= 4) {
+  const oneOfIndex = 1
+  config.module.rules[oneOfIndex].oneOf[0].options.name = `media/[name].[hash:8].[ext]`;
+  config.module.rules[oneOfIndex].oneOf[1].options.name = `media/[name].[hash:8].[ext]`;
+  config.module.rules[oneOfIndex].oneOf[8].options.name = `media/[name].[hash:8].[ext]`;
+}
+else if (major >= 2) {
   // 2.0.0 => 2
   // 2.0.1 => 3
   // 2.0.2 => 3
