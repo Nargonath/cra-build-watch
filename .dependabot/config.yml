@@ -10,4 +10,4 @@ update_configs:
       - 'Nargonath'
     default_labels:
       - 'dependency'
-    target_branch: 'develop'
+    target_branch: 'master'
