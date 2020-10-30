@@ -39,6 +39,23 @@
     "trailingComma": "es5",
     "singleQuote": true
   },
+  "release": {
+    "branches": [
+      "+([0-9])?(.{+([0-9]),x}).x",
+      "master",
+      "next",
+      "deploy",
+      "next-major",
+      {
+        "name": "beta",
+        "prerelease": true
+      },
+      {
+        "name": "alpha",
+        "prerelease": true
+      }
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Nargonath/cra-build-watch.git"
