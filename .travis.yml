@@ -18,7 +18,7 @@ jobs:
       node_js: '12'
       # required for yarn not to fail when installing semantic-release
       # instead it is removed from the dependencies and added as global at the end
-      script: yarn global add semantic-release && semantic-release || true
+      script: yarn global add semantic-release && semantic-release
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
