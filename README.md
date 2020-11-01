@@ -101,4 +101,4 @@ If those defaults do not work for you, the script accepts some arguments:
 
 # Contributions
 
-All contributions are welcomed. Please base your PR on the `develop` branch rather than `master`.
+All contributions are welcomed.
