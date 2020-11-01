@@ -85,6 +85,8 @@ By default the script will generate everything into `build/` at your project roo
 
 If those defaults do not work for you, the script accepts some arguments:
 
+- `--after-initial-build-hook`: accepts a string of shell code that will be run only once after the initial build in the same process as the `cra-build-watch`.
+- `--after-rebuild-hook`: accepts a string of shell code that will be run every time webpack rebuilds your project after a filesystem change. It runs in the same process as `cra-build-watch`.
 - `-b|--build-path`: expects either an absolute or relative path. If a relative path is given it will be prefixed by your project root path.
   - default: `yourProjectRoot/build`.
 - `--chunk-filename`: Set the naming you want to use for non-entry chunk files. Accepts webpack placeholders such as `[id]`, `[name]`, `[hash]`. Directories can be supplied.
