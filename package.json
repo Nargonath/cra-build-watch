@@ -96,7 +96,7 @@
     "fs-extra": "^8.1.0",
     "html-webpack-plugin": "^4.5.0",
     "import-cwd": "3.0.0",
-    "meow": "6.0.0",
+    "meow": "8.0.0",
     "ora": "4.0.3",
     "semver": "^7.1.1"
   }
