@@ -84,7 +84,7 @@
     "@commitlint/cli": "11.0.0",
     "@commitlint/config-conventional": "8.3.4",
     "@dixeed/eslint-config": "2.0.0",
-    "cz-conventional-changelog": "3.1.0",
+    "cz-conventional-changelog": "3.3.0",
     "eslint": "6.8.0",
     "husky": "4.3.0",
     "jest": "^26.6.1",
