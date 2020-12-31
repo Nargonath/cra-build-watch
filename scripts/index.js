@@ -73,8 +73,8 @@ config.output.path = resolvedBuildPath;
 config.output.publicPath = publicPath || '';
 
 // Grab output names from cli args, otherwise use some default naming.
-const fileNameToUse = outputFilename || `js/bundle.js`;
-const chunkNameToUse = chunkFilename || `js/[name].chunk.js`;
+const fileNameToUse = outputFilename || `static/js/bundle.js`;
+const chunkNameToUse = chunkFilename || `static/js/[name].chunk.js`;
 // If cli user adds .js, respect that, otherwise we add it ourself
 config.output.filename = fileNameToUse.slice(-3) !== '.js' ? `${fileNameToUse}.js` : fileNameToUse;
 config.output.chunkFilename =
@@ -95,9 +95,9 @@ if (disableChunks) {
 // update media path destination
 if (major >= 4) {
   const oneOfIndex = 1;
-  config.module.rules[oneOfIndex].oneOf[0].options.name = `media/[name].[hash:8].[ext]`;
-  config.module.rules[oneOfIndex].oneOf[1].options.name = `media/[name].[hash:8].[ext]`;
-  config.module.rules[oneOfIndex].oneOf[8].options.name = `media/[name].[hash:8].[ext]`;
+  config.module.rules[oneOfIndex].oneOf[0].options.name = `static/media/[name].[hash:8].[ext]`;
+  config.module.rules[oneOfIndex].oneOf[1].options.name = `static/media/[name].[hash:8].[ext]`;
+  config.module.rules[oneOfIndex].oneOf[8].options.name = `static/media/[name].[hash:8].[ext]`;
 } else if (major >= 2) {
   // 2.0.0 => 2
   // 2.0.1 => 3
@@ -105,11 +105,11 @@ if (major >= 4) {
   // 2.0.3 => 3
   // 2.0.4 to 3.0.0 => 2
   const oneOfIndex = concatenatedVersion === 200 || concatenatedVersion >= 204 ? 2 : 3;
-  config.module.rules[oneOfIndex].oneOf[0].options.name = `media/[name].[hash:8].[ext]`;
-  config.module.rules[oneOfIndex].oneOf[7].options.name = `media/[name].[hash:8].[ext]`;
+  config.module.rules[oneOfIndex].oneOf[0].options.name = `static/media/[name].[hash:8].[ext]`;
+  config.module.rules[oneOfIndex].oneOf[7].options.name = `static/media/[name].[hash:8].[ext]`;
 } else {
-  config.module.rules[1].oneOf[0].options.name = `media/[name].[hash:8].[ext]`;
-  config.module.rules[1].oneOf[3].options.name = `media/[name].[hash:8].[ext]`;
+  config.module.rules[1].oneOf[0].options.name = `static/media/[name].[hash:8].[ext]`;
+  config.module.rules[1].oneOf[3].options.name = `static/media/[name].[hash:8].[ext]`;
 }
 
 let htmlPluginIndex = 1;
