@@ -35,6 +35,27 @@ As of now (20/04/2018), `create-react-app` (more precisely `react-scripts`) does
 - Incorporating your React application into an existing application.
 - Serving your React app with a dedicated backend.
 
+# Notes for version `v4.0.0` beta testers
+
+This is just the bare version for the new behavior of the tool. I doesn't not handle any of the previous options and perhaps it shall never again. Most issues on this repo asked for features that CRA already provided out of the box so I expect most of them to be dealt with in this version. 
+
+It does not handle ejected projects yet either but it will in subsequent beta versions.
+
+## Usage
+
+Call at the project root:
+
+```bash
+npx cra-build-watch
+
+```
+
+You don't need to use `cra-build-watch` as an executable in an npm script anymore. You just need to call it every time you upgrade `react-scripts`. It works on bare CRA project. You should be able to enjoy what CRA has to offer. This tool now only monkey-patches the webpack configuration to leverage webpack-dev-server `writeToDisk` property.
+
+<details>
+
+<summary>Old versions</summary>
+
 # Prerequisites
 
 Supports `react-scripts >= 1.0.x`, hence it supports the newest version `4.x.x`.
@@ -61,9 +82,9 @@ Add a new script into your `package.json`:
 
 ```json
 {
-  "scripts": {
-    "watch": "cra-build-watch"
-  }
+"scripts": {
+"watch": "cra-build-watch"
+}
 }
 ```
 
@@ -85,20 +106,21 @@ By default the script will generate everything into `build/` at your project roo
 
 If those defaults do not work for you, the script accepts some arguments:
 
-- `--after-initial-build-hook`: accepts a string of shell code that will be run only once after the initial build in the same process as the `cra-build-watch`.
-- `--after-rebuild-hook`: accepts a string of shell code that will be run every time webpack rebuilds your project after a filesystem change. It runs in the same process as `cra-build-watch`.
-- `-b|--build-path`: expects either an absolute or relative path. If a relative path is given it will be prefixed by your project root path.
-  - default: `yourProjectRoot/build`.
-- `--chunk-filename`: Set the naming you want to use for non-entry chunk files. Accepts webpack placeholders such as `[id]`, `[name]`, `[hash]`. Directories can be supplied.
-  - default: `js/bundle.js`.
-- `--disable-chunks`: disable code-splitting / chunks so that only a single bundle.js file is generated. It only works with `react-scripts` >= `2.0.0`.
-- `-o|--output-filename`: Set the name to be used for the output bundle. Accepts webpack placeholders such as `[id]`, `[name]`, `[hash]`. Directories can be supplied.
-  - default: `js/[name].chunk.js`
-- `--react-scripts-version`: expects the `react-scripts` version you are using in your project i.e `2.0.3`. If not given it will be implied from your `node_modules` and if it cannot be implied the version `2.1.2` will be the default. Consider setting it if you **ejected** and are not using the latest `react-scripts` version.
-- `-p|--public-path`: expects a relative URL where `/` is the root. If you serve your files using an external webserver this argument is to match with your web server configuration. More information can be found in [webpack configuration guide](https://webpack.js.org/configuration/output/#output-publicpath).
-  - default: "".
-- `-v|--verbose`: display webpack build output.
+    - `--after-initial-build-hook`: accepts a string of shell code that will be run only once after the initial build in the same process as the `cra-build-watch`.
+    - `--after-rebuild-hook`: accepts a string of shell code that will be run every time webpack rebuilds your project after a filesystem change. It runs in the same process as `cra-build-watch`.
+    - `-b|--build-path`: expects either an absolute or relative path. If a relative path is given it will be prefixed by your project root path.
+      - default: `yourProjectRoot/build`.
+    - `--chunk-filename`: Set the naming you want to use for non-entry chunk files. Accepts webpack placeholders such as `[id]`, `[name]`, `[hash]`. Directories can be supplied.
+      - default: `js/bundle.js`.
+    - `--disable-chunks`: disable code-splitting / chunks so that only a single bundle.js file is generated. It only works with `react-scripts` >= `2.0.0`.
+    - `-o|--output-filename`: Set the name to be used for the output bundle. Accepts webpack placeholders such as `[id]`, `[name]`, `[hash]`. Directories can be supplied.
+      - default: `js/[name].chunk.js`
+    - `--react-scripts-version`: expects the `react-scripts` version you are using in your project i.e `2.0.3`. If not given it will be implied from your `node_modules` and if it cannot be implied the version `2.1.2` will be the default. Consider setting it if you **ejected** and are not using the latest `react-scripts` version.
+    - `-p|--public-path`: expects a relative URL where `/` is the root. If you serve your files using an external webserver this argument is to match with your web server configuration. More information can be found in [webpack configuration guide](https://webpack.js.org/configuration/output/#output-publicpath).
+      - default: "".
+    - `-v|--verbose`: display webpack build output.
 
 # Contributions
 
 All contributions are welcomed.
+</details>
