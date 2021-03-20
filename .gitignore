@@ -59,3 +59,5 @@ typings/
 
 # ignore NPM package-lock because we use yarn
 package-lock.json
+# ignore VIM session management files
+**/*.vim
