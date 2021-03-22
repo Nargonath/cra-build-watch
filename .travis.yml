@@ -1,7 +1,7 @@
 stages:
   - test
   - name: deploy
-    if: branch = deploy
+    if: branch = deploy OR branch = beta
 
 language: node_js
 cache:
