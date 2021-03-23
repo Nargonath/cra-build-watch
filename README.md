@@ -39,6 +39,10 @@ As of now (20/04/2018), `create-react-app` (more precisely `react-scripts`) does
 
 **This version is compatible with `react-scripts@2.0.3` and above**
 
+## Migration from previous versions of `cra-build-watch`
+
+You need to uninstall the lib: `npm remove -D cra-build-watch`. You can now proceed with using the beta version.
+
 This is just the bare version for the new behavior of the tool. I doesn't not handle any of the previous options and perhaps it shall never again. Most issues on this repo asked for features that CRA already provided out of the box so I expect most of them to be dealt with in this version. 
 
 It does not handle ejected projects yet either but it will in subsequent beta versions.
@@ -48,7 +52,7 @@ It does not handle ejected projects yet either but it will in subsequent beta ve
 Call at the project root:
 
 ```bash
-npx cra-build-watch
+npx cra-build-watch@beta
 
 ```
 
