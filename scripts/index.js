@@ -4,6 +4,7 @@ process.env.NODE_ENV = 'development'; // eslint-disable-line no-process-env
 process.env.FAST_REFRESH = false;
 
 const importCwd = require('import-cwd');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const fs = require('fs-extra');
 const path = require('path');
 const ora = require('ora');
@@ -15,6 +16,7 @@ const {
     buildPath,
     publicPath,
     reactScriptsVersion,
+    useReactWorkspaces,
     verbose,
     disableChunks,
     outputFilename,
@@ -27,23 +29,25 @@ const { getReactScriptsVersion, isEjected } = require('../utils');
 
 const { major, concatenatedVersion } = getReactScriptsVersion(reactScriptsVersion);
 
-const paths = isEjected ? importCwd('./config/paths') : importCwd('react-scripts/config/paths');
+const reactScriptsPath = `${useReactWorkspaces ? '@react-workspaces/' : ''}react-scripts`
+
+const paths = isEjected ? importCwd('./config/paths') : importCwd(`${reactScriptsPath}/config/paths`);
 const webpack = importCwd('webpack');
 
 const config =
   concatenatedVersion >= 212
     ? (isEjected
         ? importCwd('./config/webpack.config')
-        : importCwd('react-scripts/config/webpack.config'))('development')
+        : importCwd(`${reactScriptsPath}/config/webpack.config`))('development')
     : isEjected
     ? importCwd('./config/webpack.config.dev')
-    : importCwd('react-scripts/config/webpack.config.dev');
+    : importCwd(`${reactScriptsPath}/config/webpack.config.dev`);
 
 const HtmlWebpackPlugin = importCwd('html-webpack-plugin');
 const InterpolateHtmlPlugin = importCwd('react-dev-utils/InterpolateHtmlPlugin');
 const getClientEnvironment = isEjected
   ? importCwd('./config/env')
-  : importCwd('react-scripts/config/env');
+  : importCwd(`${reactScriptsPath}/config/env`);
 
 console.log();
 const spinner = ora('Update webpack configuration').start();
@@ -93,8 +97,9 @@ if (disableChunks) {
 }
 
 // update media path destination
+let oneOfIndex = 0;
 if (major >= 4) {
-  const oneOfIndex = 1;
+  oneOfIndex = 1;
   config.module.rules[oneOfIndex].oneOf[0].options.name = `media/[name].[hash:8].[ext]`;
   config.module.rules[oneOfIndex].oneOf[1].options.name = `media/[name].[hash:8].[ext]`;
   config.module.rules[oneOfIndex].oneOf[8].options.name = `media/[name].[hash:8].[ext]`;
@@ -104,13 +109,31 @@ if (major >= 4) {
   // 2.0.2 => 3
   // 2.0.3 => 3
   // 2.0.4 to 3.0.0 => 2
-  const oneOfIndex = concatenatedVersion === 200 || concatenatedVersion >= 204 ? 2 : 3;
+  oneOfIndex = concatenatedVersion === 200 || concatenatedVersion >= 204 ? 2 : 3;
   config.module.rules[oneOfIndex].oneOf[0].options.name = `media/[name].[hash:8].[ext]`;
   config.module.rules[oneOfIndex].oneOf[7].options.name = `media/[name].[hash:8].[ext]`;
 } else {
+  oneOfIndex = 1;
   config.module.rules[1].oneOf[0].options.name = `media/[name].[hash:8].[ext]`;
   config.module.rules[1].oneOf[3].options.name = `media/[name].[hash:8].[ext]`;
 }
+
+config.plugins.push(new MiniCssExtractPlugin())
+
+const cssIndex =  config.module.rules[oneOfIndex].oneOf.findIndex(loader =>
+  loader.test && loader.test.toString() === /\.css$/.toString()
+);
+
+if (cssIndex >= 0) {
+  // Add MiniCssExtractPlugin to css loaders
+  config.module.rules[oneOfIndex].oneOf[cssIndex].use.unshift(MiniCssExtractPlugin.loader)
+
+  // Remove `style-loader` from css loaders
+  config.module.rules[oneOfIndex].oneOf[cssIndex].use = config.module.rules[oneOfIndex].oneOf[cssIndex].use.filter(loader =>
+    typeof loader === 'object' || !loader.includes('style-loader')
+  )
+}
+
 
 let htmlPluginIndex = 1;
 let interpolateHtmlPluginIndex = 0;
