@@ -15,6 +15,7 @@ const {
     buildPath,
     publicPath,
     reactScriptsVersion,
+    useReactWorkspaces,
     verbose,
     disableChunks,
     outputFilename,
@@ -27,23 +28,25 @@ const { getReactScriptsVersion, isEjected } = require('../utils');
 
 const { major, concatenatedVersion } = getReactScriptsVersion(reactScriptsVersion);
 
-const paths = isEjected ? importCwd('./config/paths') : importCwd('react-scripts/config/paths');
+const reactScriptsPath = `${useReactWorkspaces ? '@react-workspaces/' : ''}react-scripts`
+
+const paths = isEjected ? importCwd('./config/paths') : importCwd(`${reactScriptsPath}/config/paths`);
 const webpack = importCwd('webpack');
 
 const config =
   concatenatedVersion >= 212
     ? (isEjected
         ? importCwd('./config/webpack.config')
-        : importCwd('react-scripts/config/webpack.config'))('development')
+        : importCwd(`${reactScriptsPath}/config/webpack.config`))('development')
     : isEjected
     ? importCwd('./config/webpack.config.dev')
-    : importCwd('react-scripts/config/webpack.config.dev');
+    : importCwd(`${reactScriptsPath}/config/webpack.config.dev`);
 
 const HtmlWebpackPlugin = importCwd('html-webpack-plugin');
 const InterpolateHtmlPlugin = importCwd('react-dev-utils/InterpolateHtmlPlugin');
 const getClientEnvironment = isEjected
   ? importCwd('./config/env')
-  : importCwd('react-scripts/config/env');
+  : importCwd(`${reactScriptsPath}/config/env`);
 
 console.log();
 const spinner = ora('Update webpack configuration').start();
