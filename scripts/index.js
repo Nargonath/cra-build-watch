@@ -93,7 +93,9 @@ if (disableChunks) {
 }
 
 // update media path destination
-if (major >= 4) {
+if (major >= 5) {
+  config.module.rules[1].oneOf[2].use[1].options.name = `media/[name].[hash:8].[ext]`;
+} else if (major >= 4) {
   const oneOfIndex = 1;
   config.module.rules[oneOfIndex].oneOf[0].options.name = `media/[name].[hash:8].[ext]`;
   config.module.rules[oneOfIndex].oneOf[1].options.name = `media/[name].[hash:8].[ext]`;
