@@ -98,6 +98,7 @@ If those defaults do not work for you, the script accepts some arguments:
 - `-p|--public-path`: expects a relative URL where `/` is the root. If you serve your files using an external webserver this argument is to match with your web server configuration. More information can be found in [webpack configuration guide](https://webpack.js.org/configuration/output/#output-publicpath).
   - default: "".
 - `-v|--verbose`: display webpack build output.
+- `--watchOptionPoll`: expects a number of milliseconds to enable polling, which can help if watching does not work. More information can be found in  [webpack configuration guide](https://webpack.js.org/configuration/watch/#watchoptionspoll).
 
 # Contributions
 
