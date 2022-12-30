@@ -57,3 +57,5 @@ typings/
 # dotenv environment variables file
 .env
 
+# ignore NPM package-lock because we use yarn
+package-lock.json

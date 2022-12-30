@@ -10,7 +10,7 @@
     "utils"
   ],
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=10.0.0"
   },
   "scripts": {
     "test": "jest",
@@ -39,6 +39,26 @@
     "trailingComma": "es5",
     "singleQuote": true
   },
+  "release": {
+    "branches": [
+      "+([0-9])?(.{+([0-9]),x}).x",
+      "master",
+      "next",
+      {
+        "name": "deploy",
+        "channel": false
+      },
+      "next-major",
+      {
+        "name": "beta",
+        "prerelease": true
+      },
+      {
+        "name": "alpha",
+        "prerelease": true
+      }
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Nargonath/cra-build-watch.git"
@@ -61,22 +81,22 @@
     "react-scripts": ">= 1.0.x"
   },
   "devDependencies": {
-    "@commitlint/cli": "8.3.5",
-    "@commitlint/config-conventional": "8.3.4",
+    "@commitlint/cli": "11.0.0",
+    "@commitlint/config-conventional": "11.0.0",
     "@dixeed/eslint-config": "2.0.0",
-    "cz-conventional-changelog": "3.1.0",
-    "eslint": "6.8.0",
-    "husky": "4.2.1",
-    "jest": "^25.1.0",
-    "lint-staged": "10.0.7",
-    "prettier": "1.19.1"
+    "cz-conventional-changelog": "3.3.0",
+    "eslint": "7.12.1",
+    "husky": "4.3.0",
+    "jest": "^26.6.1",
+    "lint-staged": "10.5.1",
+    "prettier": "2.1.2"
   },
   "dependencies": {
-    "cross-spawn": "7.0.1",
-    "fs-extra": "^8.1.0",
-    "html-webpack-plugin": "^3.2.0",
+    "cross-spawn": "7.0.3",
+    "fs-extra": "^9.0.1",
+    "html-webpack-plugin": "^4.5.0",
     "import-cwd": "3.0.0",
-    "meow": "6.0.0",
+    "meow": "8.0.0",
     "ora": "4.0.3",
     "semver": "^7.1.1"
   }

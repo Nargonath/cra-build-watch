@@ -10,4 +10,8 @@ update_configs:
       - 'Nargonath'
     default_labels:
       - 'dependency'
-    target_branch: 'develop'
+    target_branch: 'master'
+    commit_message:
+      prefix: 'fix'
+      prefix_development: 'build'
+      include_scope: true
