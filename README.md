@@ -13,6 +13,10 @@
 ![dependabot](https://badgen.net/dependabot/dependabot/dependabot-core/?icon=dependabot)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+# Project status
+
+I don't have time to maintain this project anymore. Feel free to fork it and improve upon it as you see fit.
+
 # Disclaimer
 
 **The builds resulting from this script are NOT for production environment.** They lack various optimizations.
