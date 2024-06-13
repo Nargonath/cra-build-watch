@@ -23,6 +23,8 @@ module.exports = meow(
       --after-initial-build-hook Run a command after each the initial build only (e.g. 'node ./afterbuild.js')
 
       --react-scripts-version Version of the react-scripts package used in your project i.e 2.0.3. If not given it will be implied from your package.json and if it cannot be implied the major version 2 will be the default.
+      
+      --use-react-workspaces Use react-workspaces version of react-scripts instead of the normal react-scripts
 
       -v, --verbose
 
@@ -53,6 +55,9 @@ module.exports = meow(
       },
       'react-scripts-version': {
         type: 'string',
+      },
+      'use-react-workspaces': {
+        type: 'boolean',
       },
       verbose: {
         type: 'boolean',
